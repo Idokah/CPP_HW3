@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
-using namespace std;
 #include "consts.h"
+
+using namespace std;
 
 class District;
 

@@ -147,13 +147,19 @@ void ElectionRound::printAllParties() const
     }
 }
 
+//int ElectionRound::comparePartyRepresantives(Party *party1, Party *party2) {
+//    return party1->getNumberOfWinningRepresantives() > party2->getNumberOfWinningRepresantives()
+//}
+
+// TODO - switch to this sort after have an iterator
 Party** ElectionRound::getSortedParties()
 {
     Party** partiesPointers = new Party*[this->partiesLogSize];
     for (int i = 0; i < this->partiesLogSize; ++i) {
         partiesPointers[i] = this->parties[i];
     }
-    mergeSort(partiesPointers, this->partiesLogSize);
+//    mergeSort(partiesPointers, this->partiesLogSize);
+//    std::sort(partiesPointers.begin(), partiesPointers.end(), comparePartyRepresantives);
     return partiesPointers;
 }
 
@@ -171,63 +177,60 @@ bool ElectionRound::isCitizenIdIsAlreadyExist(const string citizenID) const
     return false;
 }
 
-void ElectionRound::mergeSort(Party** pointersArr, int size) {
-    Party** temp;
-    if (size <= 1) return;
-    else {
-        mergeSort(pointersArr, size/2);
-        mergeSort(pointersArr + size/2, size - size/2);
-        temp = new Party*[size];
-        merge(pointersArr,pointersArr + size/2,size/2, size - size/2, temp);
-        for (int i=0; i < size; i++){
-            pointersArr[i] = temp[i];
-        }
-
-        delete[] temp;
-    }
-}
-
-void ElectionRound::merge(Party** pointersArr1, Party** pointersArr2,int size1,int size2,Party** res)
-{
-    Party* currentValue1;
-    Party* currentValue2;
-    int i1=0,i2=0,iRes=0;
-    while (i1<size1 && i2<size2)
-    {
-        currentValue1=*(pointersArr1+i1);
-        currentValue2=*(pointersArr2+i2);
-        if (currentValue1->getNumberOfWinningRepresantives() > currentValue2->getNumberOfWinningRepresantives())
-        {
-            res[iRes] = pointersArr1[i1];
-            iRes++;
-            i1++;
-        }
-        else
-        {
-            res[iRes] = pointersArr2[i2];
-            iRes++;
-            i2++;
-        }
-    }
-    while (i1<size1)
-    {
-        res[iRes] = pointersArr1[i1];
-        iRes++;
-        i1++;
-    }
-    while (i2<size2)
-    {
-        res[iRes] = pointersArr2[i2];
-        iRes++;
-        i2++;
-    }
-}
+//void ElectionRound::mergeSort(Party** pointersArr, int size) {
+//    Party** temp;
+//    if (size <= 1) return;
+//    else {
+//        mergeSort(pointersArr, size/2);
+//        mergeSort(pointersArr + size/2, size - size/2);
+//        temp = new Party*[size];
+//        merge(pointersArr,pointersArr + size/2,size/2, size - size/2, temp);
+//        for (int i=0; i < size; i++){
+//            pointersArr[i] = temp[i];
+//        }
+//
+//        delete[] temp;
+//    }
+//}
+//
+//void ElectionRound::merge(Party** pointersArr1, Party** pointersArr2,int size1,int size2,Party** res)
+//{
+//    Party* currentValue1;
+//    Party* currentValue2;
+//    int i1=0,i2=0,iRes=0;
+//    while (i1<size1 && i2<size2)
+//    {
+//        currentValue1=*(pointersArr1+i1);
+//        currentValue2=*(pointersArr2+i2);
+//        if (currentValue1->getNumberOfWinningRepresantives() > currentValue2->getNumberOfWinningRepresantives())
+//        {
+//            res[iRes] = pointersArr1[i1];
+//            iRes++;
+//            i1++;
+//        }
+//        else
+//        {
+//            res[iRes] = pointersArr2[i2];
+//            iRes++;
+//            i2++;
+//        }
+//    }
+//    while (i1<size1)
+//    {
+//        res[iRes] = pointersArr1[i1];
+//        iRes++;
+//        i1++;
+//    }
+//    while (i2<size2)
+//    {
+//        res[iRes] = pointersArr2[i2];
+//        iRes++;
+//        i2++;
+//    }
+//}
 
 void ElectionRound::save(ostream& out) const
 {
-    District** districts;
-    Citizen** votersBook;
-    Party** parties;
     this->date.save(out);
 
     out.write(rcastcc(&this->districtsLogSize), sizeof(this->districtsLogSize));

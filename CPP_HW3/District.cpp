@@ -1,23 +1,16 @@
 #include "District.h"
 
-//char* getString(const char* input);
-
-District::District(): votersPercentage(0), electionResultsSize(0), voteCount(0), citizenNum(0) {
+District::District(): votersPercentage(0), voteCount(0), citizenNum(0) {
     this->name = "";
     this->id = -1; 
     this->representativeNum = 0;
-    this->electionResults = nullptr;
 }
 
 District::District(string name, int representativeNum):
-        votersPercentage(0), electionResultsSize(1), voteCount(0), citizenNum(0) {
+        votersPercentage(0), voteCount(0), citizenNum(0) {
 	this->name = name;
 	this->id = this->generateID();
 	this->representativeNum = representativeNum;
-    this->electionResults = new int[electionResultsSize];
-    for (int i = 0; i < this->electionResultsSize ; ++i) {
-        this->electionResults[i]=0;
-    }
 }
 
 int District::getID() { return this->id; }
@@ -26,13 +19,11 @@ string District::getName() { return this->name; }
 
 string District::getName() const { return this->name; }
 
-int District::getElectionResultsSize() { return this->electionResultsSize; }
-
 int District::getRepresentativeNum(){return this->representativeNum; }
 
 int District::getRepresentativeNum() const { return this->representativeNum; }
 
-int* District::getElectionResults(){ return this->electionResults; }
+map<int, int> District::getElectionResults(){ return this->electionResults; }
 
 void District::printType(std::ostream& os) const{}
 
@@ -48,15 +39,12 @@ void District::operator=(const District& other)
     this->id = other.id;
     this->citizenNum=other.citizenNum;
     this->votersPercentage = other.votersPercentage;
-    this->electionResults = new int[other.electionResultsSize];
-    this->electionResultsSize=other.electionResultsSize;
-    memcpy(this->electionResults, other.electionResults, sizeof(int) * other.electionResultsSize);
+    this->electionResults = other.electionResults;
     this->representativeNum = other.representativeNum;
 }
 
 District::~District()
 {
-    delete[] this->electionResults;
 }
 
 int District::generateID(int val)
@@ -84,11 +72,10 @@ void District::addVote(Citizen* voter, const int partyNum)
 
 void District::addToElectionResult(const int partyNum)
 {
-    if (this->electionResultsSize < partyNum ){
-        this->increaseArrSize(this->electionResults,this->electionResultsSize, partyNum);
-
+    if (this->electionResults.find(partyNum) ==  this->electionResults.end() ) {
+        this->electionResults.insert(pair<int, int>(partyNum, 1));
     }
-    this->electionResults[partyNum-1]++;
+    else this->electionResults[partyNum]++;
 }
 
 void District::increaseArrSize(int*& arr, int &currSize, const int newSize) {
@@ -112,35 +99,59 @@ void District::increaseCitizenNum()
 }
 
 int District::getWinningParty(){
-    int maxIndex = 0, max = 0;
-    for (int i = 0; i < this->electionResultsSize; ++i) {
-        if (this->electionResults[i] > max){
-            max = this->electionResults[i];
-            maxIndex = i;
+    pair<int, int> max = make_pair(-1,-1);
+    map<int, int>::iterator itr;
+    for (itr = this->electionResults.begin(); itr != this->electionResults.end(); ++itr){
+        if (itr->second > max.second){
+            max = *itr;
         }
     }
-    return (maxIndex + 1);
+    return max.first;
 }
 
-int *District::getNumOfRepresantivesPerParty(int& numOfExistsPartiesInDistrict){
-    float *percentagePerParty = this->getPercentagePerParty();
-    int *numOfRepresantivesPerParty = new int[electionResultsSize];
-    for (int i = 0; i < this->electionResultsSize; ++i) {
-        numOfRepresantivesPerParty[i] = round(percentagePerParty[i] * this->representativeNum / 100);
-    }
-    numOfExistsPartiesInDistrict = this->electionResultsSize;
-    return numOfRepresantivesPerParty;
-}
-
-float* District::getPercentagePerParty()
+// TODO change
+map <int,int> District::getNumOfRepresantivesPerParty()
 {
-    float *percentagePerParty = new float[electionResultsSize]; //// the index represent the (party ID - 1) and the value is the percentage.
-
-    for (int i = 0; i < electionResultsSize; ++i)
+    map <int,float> percentagePerParty = this->getPercentagePerParty();
+    map <int,int> numOfRepresantivesPerParty;
+    for (auto const& pair : electionResults)
     {
-        percentagePerParty[i] = (this->voteCount == 0) ? 0 : (static_cast<float>(this->electionResults[i]) / static_cast<float>(this->voteCount)) * 100;
+        numOfRepresantivesPerParty[pair.first]=
+                round(percentagePerParty[pair.first] * this->representativeNum / 100);
     }
+
+    return numOfRepresantivesPerParty;
+
+//    DynamicArray<float> percentagePerParty = this->getPercentagePerParty();
+//    int *numOfRepresantivesPerParty = new int[electionResultsSize];
+//    for (int i = 0; i < this->electionResultsSize; ++i)
+//    {
+//        numOfRepresantivesPerParty[i] = round(percentagePerParty[i] * this->representativeNum / 100);
+//    }
+//    numOfExistsPartiesInDistrict = this->electionResultsSize;
+//    return numOfRepresantivesPerParty;
+}
+
+map <int,float> District::getPercentagePerParty()
+{
+    map <int,float> percentagePerParty;
+    for (auto const& pair : electionResults)
+    {
+       percentagePerParty[pair.first]= (pair.second / static_cast<float>(this->voteCount)) * 100;
+    }
+
     return percentagePerParty;
+
+//    float numberOfVotes;
+//    int numberOfParties = (this->electionResults.end()--)->first;
+//    DynamicArray<float> percentagePerParty;
+//
+//    for (int i = 0; i < numberOfParties; ++i) {
+//        numberOfVotes = (this->electionResults.find(i) ==  this->electionResults.end()) ?
+//                    0 : static_cast<float>(this->electionResults[i]);
+//        percentagePerParty[i] = (this->voteCount == 0) ? 0 : (numberOfVotes / static_cast<float>(this->voteCount)) * 100;
+//    }
+//    return percentagePerParty;
 }
 
 float District::getVotePercentage()
@@ -159,47 +170,34 @@ void District::printElectionResult(int partiesLogSize, Party** parties)
 {
     Party* party;
     string headName;
-    int numOfExistsPartiesInDistrict, * numOfRepresantivesPerParty = nullptr, * electionResults , partyIndex;
-    float* percentagePerParty = nullptr;
-    int numOfParties = this->getElectionResultsSize();
-    electionResults = this->getElectionResults();
-    percentagePerParty = this->getPercentagePerParty();
-    numOfRepresantivesPerParty = this->getNumOfRepresantivesPerParty(numOfExistsPartiesInDistrict);
+    int partyIndex;
+    map <int, int> electionResults = this->getElectionResults();
+    map <int,float> percentagePerParty = this->getPercentagePerParty();
+    map <int,int> numOfRepresantivesPerParty = this->getNumOfRepresantivesPerParty();
+
     cout << "total voters percentage- " << this->votersPercentage << "%" << endl;
     cout << "--- parties results --- " << endl;
-    votesPerParty* votersPerParty = this->getPartiesSortedByVotes(this->getElectionResults(), numOfParties);
+    vector<pair<int, int>> votersPerParty = getMapSortByValue(electionResults);
+
+    for (auto & pair : votersPerParty)
+    {
+        partyIndex=pair.first-1;
+        cout << "    Party " << (parties[partyIndex]->getName()) <<":"<< endl;
+        cout << "        number of voters- " << pair.second << endl
+             << "        percentage of all votes - " << percentagePerParty[pair.first]<< "%" << endl;
+        cout << "        represantives - " << endl;
+        parties[partyIndex]->printNRepresantive(this->getID(), numOfRepresantivesPerParty[pair.first]);
+    }
 
     for (int j = 0; j < partiesLogSize; ++j) {
-        partyIndex = votersPerParty->size > j ? votersPerParty[j].partyIndex : j;
-        cout << "    Party " << (parties[partyIndex]->getName()) <<":"<< endl;       
-        if (j < numOfExistsPartiesInDistrict)
-        {
-            cout << "        number of voters- " << electionResults[partyIndex] << endl
-                << "        percentage of all votes - " << percentagePerParty[partyIndex] << "%" << endl;
-            if (numOfRepresantivesPerParty[j] > 0) {
-                cout << "        represantives - " << endl;
-                party = parties[j];
-                party->printNRepresantive(this->getID(), numOfRepresantivesPerParty[partyIndex]);
-            }
-        }
-        else {
+        if (this->electionResults.find(j+1) == this->electionResults.end()) {
+            cout << "    Party " << (parties[j]->getName()) << ":" << endl;
             cout << "        number of voters" << " - 0" << endl
-                << "        percentage of all votes - 0%" << endl;
+                 << "        percentage of all votes - 0%" << endl;
         }
     }
 }
 
-votesPerParty* District::getPartiesSortedByVotes(int* electionResult, int electionResultLogSize)
-{
-    votesPerParty* votesPerPartyArr = new votesPerParty[electionResultLogSize];
-    votesPerPartyArr->size = electionResultLogSize;
-    for (int i = 0; i < electionResultLogSize; i++)
-    {
-        votesPerPartyArr[i] = { i,electionResult[i] };
-    }
-    mergeSort(votesPerPartyArr, electionResultLogSize);
-    return votesPerPartyArr;
-}
 
 void District::setGenerateIDtoValue(int val)
 {
@@ -268,10 +266,7 @@ void District::save(ostream& out) const
     out.write(rcastcc(&this->citizenNum), sizeof(this->citizenNum));
     out.write(rcastcc(&this->votersPercentage), sizeof(this->votersPercentage));
     out.write(rcastcc(&this->voteCount), sizeof(this->voteCount));
-
-    int electionResultsLen = this->electionResultsSize;
-    out.write(rcastcc(&electionResultsLen), sizeof(electionResultsLen));
-    out.write(rcastcc(this->electionResults), sizeof(int) * electionResultsLen);
+    saveMap(out, this->electionResults);
     out.write(rcastcc(&this->representativeNum), sizeof(this->representativeNum));
 }
 
@@ -286,12 +281,7 @@ void District::load(istream& in)
     in.read(rcastc(&this->citizenNum), sizeof(this->citizenNum));
     in.read(rcastc(&this->votersPercentage), sizeof(this->votersPercentage));
     in.read(rcastc(&this->voteCount), sizeof(this->voteCount));
-
-    int electionResultsLen;
-    in.read(rcastc(&electionResultsLen), sizeof(electionResultsLen));
-    this->electionResultsSize = electionResultsLen;
-    this->electionResults = new int[electionResultsLen];
-    in.read(rcastc(this->electionResults), sizeof(int) * electionResultsLen);
+    loadMap(in, this->electionResults);
     in.read(rcastc(&this->representativeNum), sizeof(this->representativeNum));
 }
 

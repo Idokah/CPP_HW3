@@ -52,8 +52,8 @@ private:
 		int partiesPhySize;
 		void increasePartiesArrSize();
 		
-        void mergeSort(Party** pointersArr, int size);
-		void merge(Party** pointersArr1, Party** pointersArr2, int size1, int size2, Party** res);
+//        void mergeSort(Party** pointersArr, int size);
+//		void merge(Party** pointersArr1, Party** pointersArr2, int size1, int size2, Party** res);
 	protected:
 		ElectionRound();
 		ElectionRound(const int day, const int month, const int year);
