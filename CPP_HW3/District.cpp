@@ -1,23 +1,18 @@
 #include "District.h"
-#include "Citizen.h"
-#include <math.h>
-#include <iostream>
 
-using namespace std;
-
-char* getString(const char* input);
+//char* getString(const char* input);
 
 District::District(): votersPercentage(0), electionResultsSize(0), voteCount(0), citizenNum(0) {
-    this->name = nullptr;
+    this->name = "";
     this->id = -1; 
     this->representativeNum = 0;
     this->electionResults = nullptr;
 }
 
-District::District(char *name, int representativeNum):
+District::District(string name, int representativeNum):
         votersPercentage(0), electionResultsSize(1), voteCount(0), citizenNum(0) {
-	this->name = getString(name);
-	this->id = this-> generateID();
+	this->name = name;
+	this->id = this->generateID();
 	this->representativeNum = representativeNum;
     this->electionResults = new int[electionResultsSize];
     for (int i = 0; i < this->electionResultsSize ; ++i) {
@@ -27,9 +22,9 @@ District::District(char *name, int representativeNum):
 
 int District::getID() { return this->id; }
 
-char* District::getName() { return this->name; }
+string District::getName() { return this->name; }
 
-char* District::getName() const { return this->name; }
+string District::getName() const { return this->name; }
 
 int District::getElectionResultsSize() { return this->electionResultsSize; }
 
@@ -49,8 +44,7 @@ District::District(const District& other)
 void District::operator=(const District& other)
 {
     this->voteCount=other.voteCount;
-    if (this->name!=nullptr) delete[] name;
-    this->name = getString(other.name);
+    this->name = other.name;
     this->id = other.id;
     this->citizenNum=other.citizenNum;
     this->votersPercentage = other.votersPercentage;
@@ -62,7 +56,6 @@ void District::operator=(const District& other)
 
 District::~District()
 {
-    delete[] name;
     delete[] this->electionResults;
 }
 
@@ -165,7 +158,7 @@ ostream& operator<<(ostream& os, const District& district)
 void District::printElectionResult(int partiesLogSize, Party** parties)
 {
     Party* party;
-    char* headName;
+    string headName;
     int numOfExistsPartiesInDistrict, * numOfRepresantivesPerParty = nullptr, * electionResults , partyIndex;
     float* percentagePerParty = nullptr;
     int numOfParties = this->getElectionResultsSize();
@@ -267,9 +260,9 @@ void District::merge(votesPerParty* indexesArr1, votesPerParty* indexesArr2, int
 
 void District::save(ostream& out) const
 {
-    int nameLen = strlen(this->name);
-    out.write(rcastcc(&nameLen), sizeof(nameLen));
-    out.write(rcastcc(this->name), sizeof(char) * nameLen);
+    int nameLen=this->name.length();
+    out.write(rcastcc(&nameLen),sizeof(nameLen));
+    out.write(&this->name[0], nameLen);
 
     out.write(rcastcc(&this->id), sizeof(this->id));
     out.write(rcastcc(&this->citizenNum), sizeof(this->citizenNum));
@@ -280,16 +273,15 @@ void District::save(ostream& out) const
     out.write(rcastcc(&electionResultsLen), sizeof(electionResultsLen));
     out.write(rcastcc(this->electionResults), sizeof(int) * electionResultsLen);
     out.write(rcastcc(&this->representativeNum), sizeof(this->representativeNum));
-    
 }
 
 void District::load(istream& in)
 {
     int nameLen;
     in.read(rcastc(&nameLen), sizeof(nameLen));
-    this->name = new char[nameLen + 1];
-    this->name[nameLen] = '\0';
-    in.read(rcastc(this->name), sizeof(char) * nameLen);
+    this->name.resize(nameLen);
+    in.read(&this->name[0], nameLen);
+
     in.read(rcastc(&this->id), sizeof(this->id));
     in.read(rcastc(&this->citizenNum), sizeof(this->citizenNum));
     in.read(rcastc(&this->votersPercentage), sizeof(this->votersPercentage));
@@ -300,6 +292,6 @@ void District::load(istream& in)
     this->electionResultsSize = electionResultsLen;
     this->electionResults = new int[electionResultsLen];
     in.read(rcastc(this->electionResults), sizeof(int) * electionResultsLen);
-    in.read(rcastc(&this->representativeNum), sizeof(this->representativeNum)); 
+    in.read(rcastc(&this->representativeNum), sizeof(this->representativeNum));
 }
 

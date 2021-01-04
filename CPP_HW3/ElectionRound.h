@@ -5,8 +5,8 @@
 #include "Party.h"
 #include "consts.h"
 
-#define rcastcc reinterpret_cast<const char*>
-#define rcastc reinterpret_cast<char*>
+//#define rcastcc reinterpret_cast<const char*>
+//#define rcastc reinterpret_cast<char*>
 
 class ElectionRound
 {
@@ -16,7 +16,7 @@ class ElectionRound
 		virtual void addDistrict(District* district);
 		void addCitizen(Citizen* citizen);
 		void addParty(Party* party);
-		Citizen* getCitizenByID(const char* representiveID) const;
+		Citizen* getCitizenByID(const string representiveID) const;
         Party* getPartyByID(int partyID) const;
         District* getDistrictByID(const int districtID) const;
         int getDistrictLogSize() const;
@@ -27,7 +27,7 @@ class ElectionRound
         void printAllCitizens() const;
         void printAllParties() const;
         Party** getSortedParties();
-		bool isCitizenIdIsAlreadyExist(const char* citizenID) const;
+		bool isCitizenIdIsAlreadyExist(const string citizenID) const;
 		virtual void save(ostream& out) const;
 		void showElectionRoundDate() const;
 		void load(istream& in);

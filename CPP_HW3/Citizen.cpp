@@ -4,19 +4,12 @@
 
 using namespace std;
 
-char* getString(const char* input) {
-	int inputLen = strlen(input);
-	char* str = new char[inputLen + 1];
-	memcpy(str, input, inputLen);
-	str[inputLen] = '\0';
-	return str;
-}
-Citizen::Citizen() :  name(nullptr), id(nullptr), birthYear(0), district(nullptr), isPartyMember(false), isAlreadyVote(false) {
+Citizen::Citizen() :  name(""), id(""), birthYear(0), district(nullptr), isPartyMember(false), isAlreadyVote(false) {
 }
 
-Citizen::Citizen(char* name, char* id, unsigned int birthYear, District* district) : isPartyMember(false), isAlreadyVote(false) {
-    this->name = getString(name);
-    this->id = getString(id);
+Citizen::Citizen(string name, string id, unsigned int birthYear, District* district) : isPartyMember(false), isAlreadyVote(false) {
+    this->name = name;
+    this->id = id;
     this->birthYear = birthYear;
     this->district = district;
 }
@@ -30,13 +23,11 @@ Citizen::Citizen(istream& in, District** districts, int districtsSize) : Citizen
 }
 
 Citizen::~Citizen() {
-    delete[] name;
-    delete[] id;
 }
 
-char* Citizen::getName() { return this->name; }
+string Citizen::getName() { return this->name; }
 
-char* Citizen::getName() const { return this->name; }
+string Citizen::getName() const { return this->name; }
 
 bool Citizen::setIsPartyMember() {
     this->isPartyMember = true;
@@ -53,8 +44,8 @@ bool Citizen::getIsPartyMember() const { return this->isPartyMember;}
 bool Citizen::getIsAlreadyVote() const { return this->isAlreadyVote;}
 
 Citizen& Citizen::operator=(const Citizen& other){
-    this->name = getString(other.name);
-    this->id = getString(other.id);
+    this->name = other.name;
+    this->id = other.id;
     this->birthYear = other.birthYear;
     *(this->district) = *(other.district);
     this->isPartyMember = other.isPartyMember;
@@ -62,7 +53,7 @@ Citizen& Citizen::operator=(const Citizen& other){
     return *this;
 }
 
-char* Citizen::getID() const { return this->id; }
+string Citizen::getID() const { return this->id; }
 
 District* Citizen::getDistrict(){ return this->district;}
 
@@ -76,13 +67,14 @@ ostream& operator<<(ostream& os, const Citizen& citizen)
 
 void Citizen::save(ostream& out) const
 {
-    int nameLen = strlen(this->name);
-    out.write(rcastcc(&nameLen), sizeof(nameLen));
-    out.write(rcastcc(this->name), sizeof(char) * nameLen);
+    int nameLen=this->name.length();
+    out.write(rcastcc(&nameLen),sizeof(nameLen));
+    out.write(&this->name[0], nameLen);
 
-    int idLen = strlen(this->id);
-    out.write(rcastcc(&idLen), sizeof(idLen));
-    out.write(rcastcc(this->id), sizeof(char) * idLen);
+    int idLen=this->name.length();
+    out.write(rcastcc(&idLen),sizeof(idLen));
+    out.write(&this->id[0], idLen);
+
     int districtID = this->district->getID();
     out.write(rcastcc(&districtID), sizeof(districtID));
 
@@ -94,17 +86,16 @@ void Citizen::save(ostream& out) const
 
 void Citizen::load(istream& in, District** districts, int districtsSize)
 {
-    int nameLen;
-    in.read(rcastc(&nameLen), sizeof(nameLen));
-    this->name = new char[nameLen + 1];
-    this->name[nameLen] = '\0';
-    in.read(rcastc(this->name), sizeof(char) * nameLen);
+    int nameLen, idLen;
 
-    int idLen;
+    in.read(rcastc(&nameLen), sizeof(nameLen));
+    this->name.resize(nameLen);
+    in.read(&this->name[0], nameLen);
+
+
     in.read(rcastc(&idLen), sizeof(idLen));
-    this->id = new char[idLen + 1];
-    this->id[idLen] = '\0';
-    in.read(rcastc(this->id), sizeof(char) * idLen);
+    this->id.resize(nameLen);
+    in.read(&this->id[0], idLen);
 
     int districtID;
     in.read(rcastc(&districtID), sizeof(districtID));
@@ -120,5 +111,4 @@ void Citizen::load(istream& in, District** districts, int districtsSize)
     in.read(rcastc(&this->birthYear), sizeof(this->birthYear));
     in.read(rcastc(&this->isPartyMember), sizeof(this->isPartyMember));
     in.read(rcastc(&this->isAlreadyVote), sizeof(this->isAlreadyVote));
-
 }

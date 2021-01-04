@@ -2,15 +2,14 @@
 #include <iostream>
 #include "Party.h"
 #include "consts.h"
+#include "Citizen.h"
+#include <math.h>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
-#define rcastcc reinterpret_cast<const char*>
-#define rcastc reinterpret_cast<char*>
-
 class Citizen;
-
-
 
 struct votesPerParty
 {
@@ -27,8 +26,8 @@ class District
 		virtual ~District();
         void addVote(Citizen* voter, const int partyNum);
         int getID();
-        char* getName();
-        char* getName() const;
+        string getName();
+        string getName() const;
         int getElectionResultsSize();
         int getRepresentativeNum();
         int getRepresentativeNum() const;
@@ -55,9 +54,9 @@ class District
 
     protected:
         District();
-        District(char* name, int representativeNum);
+        District(string name, int representativeNum);
         District(const District& other);
-        char* name;
+        string name;
         int id;
         int citizenNum;
         float votersPercentage;

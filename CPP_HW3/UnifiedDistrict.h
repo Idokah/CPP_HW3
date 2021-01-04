@@ -5,7 +5,7 @@ class UnifiedDistrict : public District {
 public:
 	UnifiedDistrict();
 	UnifiedDistrict(istream& in);
-	UnifiedDistrict(char* name, int representativeNum);
+	UnifiedDistrict(string name, int representativeNum);
 	virtual void printType(std::ostream& os) const;
 	virtual void printElectionResult(int partiesLogSize, Party** parties);
 

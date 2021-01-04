@@ -86,14 +86,15 @@ void CitizenList::load(istream& in, Citizen** citizens, int citizensSize) {
     int Len;
     in.read(rcastc(&Len), sizeof(Len));
     int idLen;
-    char citizenId[MAX_STRING_LEN];
+    string citizenId;
     for (int i = 0; i < Len; ++i) {
         in.read(rcastc(&idLen), sizeof(idLen));
-        in.read(rcastc(citizenId), sizeof(char) * idLen);
-        citizenId[idLen] = '\0';
+        citizenId.resize(idLen);
+        in.read(&citizenId[0], idLen);
+
         for (int i = 0; i < citizensSize; i++)
         {
-            if (strcmp(citizens[i]->getID(), citizenId) == 0)
+            if (citizenId.compare(citizens[i]->getID()) == 0)
             {
                 this->addNode(citizens[i]);
                 break;
@@ -106,14 +107,14 @@ void CitizenList::saveIDs(ostream& out) const
 {
     node* curr = this->head;
     out.write(rcastcc(&this->len), sizeof(this->len));
-    char* citizenID;
+    string citizenID;
     int idLen;
     for (int i = 0; i < this->len; i++)
     {
         citizenID = curr->citizen->getID();
-        idLen = strlen(citizenID);
-        out.write(rcastcc(&idLen), sizeof(idLen));
-        out.write(rcastcc(citizenID), sizeof(char) * idLen);
+        idLen = citizenID.length();
+        out.write(rcastcc(&idLen),sizeof(idLen));
+        out.write(&citizenID[0], idLen);
         curr=curr->next;
     }
 }

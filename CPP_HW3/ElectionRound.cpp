@@ -98,11 +98,11 @@ void ElectionRound::increasePartiesArrSize() {
     this->parties = newParties;
 }
 
-Citizen* ElectionRound::getCitizenByID(const char* representiveID) const
+Citizen* ElectionRound::getCitizenByID(const string representiveID) const
 {
 	for (int i = 0; i < votersLogSize; ++i)
 	{
-		if (strcmp(this->votersBook[i]->getID(), representiveID) == 0)
+		if (this->votersBook[i]->getID().compare(representiveID) == 0)
 			return this->votersBook[i];
 	}
 
@@ -157,11 +157,11 @@ Party** ElectionRound::getSortedParties()
     return partiesPointers;
 }
 
-bool ElectionRound::isCitizenIdIsAlreadyExist(const char* citizenID) const
+bool ElectionRound::isCitizenIdIsAlreadyExist(const string citizenID) const
 {
     for (int i = 0; i < votersLogSize; i++)
     {
-        if (strcmp(citizenID, votersBook[i]->getID()) == 0)
+        if (citizenID.compare(votersBook[i]->getID()) == 0)
         {
             cout << "this ID is already exist." << endl;
             return true;

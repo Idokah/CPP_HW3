@@ -8,16 +8,16 @@ class Party {
 	public:
 		Party();
 		Party(istream& in,Citizen** citizens, int citizensSize);
-		Party(const char* name, Citizen* head);
+		Party(const string name, Citizen* head);
 		Party(const Party& other);
 		~Party();
 		int getID() const;
         void addRepresentive(const int districtId, Citizen* newRepresentive);
         Party& operator=(const Party& other);
 		const Citizen* getPartyHead();
-		const char* getName();
-        const char* getName() const;
-		char* getPartyHeadName() const;
+		const string getName();
+        const string getName() const;
+		string getPartyHeadName() const;
 		void printNRepresantive(const int districtID,const int n); ////prints the first n represantives of the party in district - districtID
 		int getNumberOfVotes();
 		void increaseNumberOfVotes();
@@ -31,7 +31,7 @@ class Party {
 		void setGenerateIDtoValue(int val);
 
     private:
-		char* name;
+        string name;
 		Citizen* partyHead;
 		int id;
 		CitizenList** representivesArr; 

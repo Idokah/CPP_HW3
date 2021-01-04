@@ -9,7 +9,7 @@ DividedDistrict::DividedDistrict(istream& in)
     this->load(in);
 }
 
-DividedDistrict::DividedDistrict(char* name, int representativeNum) : District(name, representativeNum) {}
+DividedDistrict::DividedDistrict(string name, int representativeNum) : District(name, representativeNum) {}
 
 void DividedDistrict::printType(std::ostream& os) const
 {

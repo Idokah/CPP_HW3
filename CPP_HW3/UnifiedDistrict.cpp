@@ -9,7 +9,7 @@ UnifiedDistrict::UnifiedDistrict(istream& in)
     this->load(in);
 }
 
-UnifiedDistrict::UnifiedDistrict(char* name, int representativeNum) : District(name, representativeNum){}
+UnifiedDistrict::UnifiedDistrict(string name, int representativeNum) : District(name, representativeNum){}
 
 
 void UnifiedDistrict::printType(std::ostream& os) const
@@ -20,7 +20,7 @@ void UnifiedDistrict::printType(std::ostream& os) const
 void UnifiedDistrict::printElectionResult(int partiesLogSize, Party** parties)
 {
 	Party* winningParty;
-    const char* headName;
+	string headName;
     winningParty = parties[this->getWinningParty()-1];
     headName = winningParty->getPartyHead()->getName();
     cout << "--- the winning party head --- " << endl;
