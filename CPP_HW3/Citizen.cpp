@@ -8,6 +8,10 @@ Citizen::Citizen() :  name(""), id(""), birthYear(0), district(nullptr), isParty
 }
 
 Citizen::Citizen(string name, string id, unsigned int birthYear, District* district) : isPartyMember(false), isAlreadyVote(false) {
+    // TODO- enable
+    //if (id.length() != 9) {
+    //    throw invalid_argument("id len must be 9 digits");
+    //}
     this->name = name;
     this->id = id;
     this->birthYear = birthYear;

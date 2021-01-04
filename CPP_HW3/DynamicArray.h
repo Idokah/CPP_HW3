@@ -104,7 +104,7 @@ public:
 			return temp;
 		}
 	};
-	// and here we duplicate the 'iterator' class to 'const_iterator'
+	// and here we duplicate the 'iterator' class to 'const_iterator' 
 
 	void insert(const iterator& pos, const T& val) {
 		if (_logicalSize == _physicalSize)
@@ -123,28 +123,41 @@ public:
 		++_logicalSize;
 	}
 
-//	const iterator& erase(const iterator& iter)
-//	{
-//		iterator itrStart = front();
-//		iterator itrCurrent = itrStart, itrPrev = --itrStart;
-//		while (itrCurrent != iter)
-//		{
-//			*itrPrev = *itrCurrent;
-//			itrCurrent++;
-//		}
-//		*itrCurrent = *itrPrev;
-//		while (itrCurrent != end())
-//		{
-//
-//			//itrCurrent = itrPrev++;
-//		}
-//		iterator p = pos;
-//		*p = val;
-//		++_logicalSize;
-//
-//	}
+	const iterator& erase(const iterator& iter) 
+	{
+		iterator itrCurrent = iter,itrNext=iter++;  
+		T temp =*itrCurrent;
+		while (itrCurrent != end())
+		{
+			*itrCurrent = *itrNext;
+			itrCurrent++; itrNext++;
+		}
+		--_logicalSize;
+		return iter--; //what if iter is the first?
+	}
 
-//	const iterator& erase(const iterator& first, const iterator& last);
+	const iterator& erase(const iterator& first, const iterator& last)
+	{
+		bool allDeleted = false;
+		int count = 0, countDeleted = 0;
+		iterator itrCurrent = last, itrInstead=first, lastToDelete=last--;
+		while (itrCurrent != end())
+		{
+			if (itrInstead == lastToDelete)
+			{
+				allDeleted = true;
+				countDeleted = count;
+			}
+			*itrInstead = *itrCurrent;
+			itrInstead++; itrCurrent++, count++;
+		}
+		if (countDeleted == 0)
+		{
+			_logicalSize = count;
+		}
+		_logicalSize -= countDeleted;
+		return; // ?
+	}
 
 	iterator begin() {
 		return iterator(*this, 0);
@@ -171,17 +184,19 @@ public:
 
 private:
 	void resize() {
-	    _physicalSize *= 2;
+		_physicalSize *= 2;
 		T* temp = new T[_physicalSize];
 		for (int i = 0; i < _logicalSize; i++)
 			temp[i] = _arr[i];
 
-        delete[] _arr;
-        _arr = temp;
-    }
-
+		delete[] _arr;
+		_arr = temp;
+	}
 
 	T* _arr;
 	int _logicalSize;
 	int _physicalSize;
 };
+
+
+

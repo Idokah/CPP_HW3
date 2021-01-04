@@ -35,8 +35,8 @@ Party& Party::operator=(const Party& other) {
 
 Party::~Party() {
    for (int i = 0; i < this->sizeRepresentivesArr; i++)
-       delete representivesArr[i];
-   delete[] representivesArr;
+       if (representivesArr[i] != nullptr) delete representivesArr[i];
+   if (representivesArr != nullptr) delete[] representivesArr;
 }
 
 const Citizen* Party::getPartyHead(){ return this->partyHead; }

@@ -23,6 +23,7 @@ class ElectionRound
         int getPartiesLogSize() const;
         District** getDistricts() const;
 		Party** getPartiesArr() const;
+		int getYear() const;
         virtual void printAllDistricts() const;
         void printAllCitizens() const;
         void printAllParties() const;
@@ -34,9 +35,9 @@ class ElectionRound
 
 private:
 		struct Date {
+			int day;
+			int month;
 			int year;
-            int month;
-            int day;
 			void save(ostream& out) const;
 		};
 		Date date;

@@ -3,34 +3,59 @@
 #include "DividedDistrict.h"
 #include "UnifiedDistrict.h"
 
+const int DAYS_IN_MONTH[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+
 ElectionRound::ElectionRound():date({0,0,0}), votersPhySize(1), votersLogSize(0), votersBook(nullptr),
                             parties(nullptr),partiesLogSize(0),partiesPhySize(1),districts(nullptr),districtsLogSize(0), districtsPhySize(1)
 {
 }
 
-ElectionRound::ElectionRound(const int day, const int month, const int year) : date({ day, month, year }), districtsLogSize(0), districtsPhySize(1), votersLogSize(0), votersPhySize(1), partiesPhySize(1), partiesLogSize(0)
+ElectionRound::ElectionRound(const int day, const int month, const int year) : districtsLogSize(0), districtsPhySize(1), votersLogSize(0), votersPhySize(1), partiesPhySize(1), partiesLogSize(0)
 {
-	this->parties = new Party*[partiesPhySize];
-    this->districts = new District*[districtsPhySize];
-    this->votersBook = new Citizen*[votersPhySize];
+    
+    try {
+        this->parties = nullptr;
+        this->districts = nullptr;
+        this->votersBook = nullptr;
+        if (year < 0)
+            throw out_of_range("year cannot be negative");
+        if (month < 1 || month>12)
+            throw out_of_range("month is out of range");
+        if (day > DAYS_IN_MONTH[month - 1] || day < 1)
+            throw out_of_range("day is out of range");
+        this->date = { day, month, year };
+        this->parties = new Party * [partiesPhySize];
+        this->districts = new District * [districtsPhySize];
+        this->votersBook = new Citizen * [votersPhySize];
+    }
+    catch (bad_alloc& ex)
+    {
+        if (this->parties != nullptr)
+            delete[] this->parties;
+        if (this->districts != nullptr)
+            delete[] this->districts;
+        cout << ex.what() << endl;
+        exit(1);
+    }
 }
 
 ElectionRound::~ElectionRound()
 {
     for (int i = 0; i < this->votersLogSize; ++i) {
-        delete this->votersBook[i];
+        if (this->votersBook[i] != nullptr) delete this->votersBook[i];
     }
-    delete[] this->votersBook;
+    if (this->votersBook != nullptr) delete[] this->votersBook;
 
     for (int i = 0; i < this->partiesLogSize; ++i) {
-        delete this->parties[i];
+        if (this->parties[i] != nullptr) delete this->parties[i];
     }
-    delete[] this->parties;
+    if (this->parties != nullptr) delete[] this->parties;
 
     for (int i = 0; i < this->districtsLogSize; ++i) {
-        delete this->districts[i];
+        if (this->districts[i] != nullptr) delete this->districts[i];
     }
-    delete[] this->districts;
+    if (this->districts != nullptr) delete[] this->districts;
 }
 
 void ElectionRound::addDistrict(District* district){}
@@ -46,15 +71,29 @@ Party** ElectionRound::getPartiesArr() const
     return parties;
 }
 
+int ElectionRound::getYear() const
+{
+    return this->date.year;
+}
+
 void ElectionRound::increaseDistrictsArrSize() {
 	this->districtsPhySize *= 2;
-	District** newDistricts = new District*[districtsPhySize];
-	for (int i = 0; i < districtsLogSize; i++)
-	{
-		newDistricts[i] = this->districts[i];
-	}
-    delete[] this->districts;
-    this->districts = newDistricts;
+    try {
+        District** newDistricts = new District * [districtsPhySize];
+
+
+        for (int i = 0; i < districtsLogSize; i++)
+        {
+            newDistricts[i] = this->districts[i];
+        }
+        delete[] this->districts;
+        this->districts = newDistricts;
+    }
+    catch (bad_alloc& ex)
+    {
+        cout << ex.what() << endl;
+        exit(1);
+    }
 }
 
 void ElectionRound::addCitizen(Citizen* citizen)
@@ -68,14 +107,21 @@ void ElectionRound::addCitizen(Citizen* citizen)
 }
 
 void ElectionRound::increaseVotersArrSize() {
-	this->votersPhySize *= 2;
-	Citizen** newVotersBook = new Citizen*[votersPhySize];
-	for (int i = 0; i < this->votersLogSize; i++)
-	{
-		newVotersBook[i] = this->votersBook[i];
-	}
-	delete[] this->votersBook;
-	this->votersBook = newVotersBook;
+    this->votersPhySize *= 2;
+    try {
+        Citizen** newVotersBook = new Citizen * [votersPhySize];
+        for (int i = 0; i < this->votersLogSize; i++)
+        {
+            newVotersBook[i] = this->votersBook[i];
+        }
+        delete[] this->votersBook;
+        this->votersBook = newVotersBook;
+    }
+    catch (bad_alloc& ex)
+    {
+        cout << ex.what() << endl;
+        exit(1);
+    }
 }
 
 void ElectionRound::addParty(Party* party)
@@ -105,8 +151,7 @@ Citizen* ElectionRound::getCitizenByID(const string representiveID) const
 		if (this->votersBook[i]->getID().compare(representiveID) == 0)
 			return this->votersBook[i];
 	}
-
-	return nullptr;
+    throw invalid_argument("There is no such citizen.");
 }
 
 Party* ElectionRound::getPartyByID(int partyId) const
@@ -116,8 +161,7 @@ Party* ElectionRound::getPartyByID(int partyId) const
         if (this->parties[i]->getID() == partyId)
             return this->parties[i];
     }
-
-    return nullptr;
+    throw invalid_argument("There is no such party.");
 }
 
 District* ElectionRound::getDistrictByID(const int districtID) const
@@ -127,8 +171,7 @@ District* ElectionRound::getDistrictByID(const int districtID) const
         if (this->districts[i]->getID() == districtID)
             return this->districts[i];
     }
-
-    return nullptr;
+    throw invalid_argument("There is no such district.");
 }
 
 void ElectionRound::printAllDistricts() const {}
@@ -169,12 +212,11 @@ bool ElectionRound::isCitizenIdIsAlreadyExist(const string citizenID) const
     {
         if (citizenID.compare(votersBook[i]->getID()) == 0)
         {
-            cout << "this ID is already exist." << endl;
             return true;
         }
             
     }
-    return false;
+  return false;
 }
 
 //void ElectionRound::mergeSort(Party** pointersArr, int size) {
