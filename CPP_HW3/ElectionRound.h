@@ -55,18 +55,5 @@ private:
 		ElectionRound(const int day, const int month, const int year);
 		ElectionRound(ElectionRound& electionRound) = delete;
 		vector<District*> districts;
-		
-		template<class K, class T>
-		vector<K> loadVector(istream& in, vector<K> vec, Builder<T>* builder)
-		{
-			int size;
-			in.read(rcastc(&size), sizeof(size));
-			for (int i = 0; i < size; ++i)
-			{
-				vec.push_back(builder->construct(in));
-			}
-			return vec;
-		}
-
 };
 

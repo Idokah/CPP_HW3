@@ -26,37 +26,6 @@ map<K, V> loadMap(istream &in, map<K, V> map)
     return map;
 }
 
-
-template <class K,class V>
-int cmpValues(pair<K, V>& a, pair<K, V>& b)
-{
-    if (a.second == b.second) return 0;
-    return (a.second < b.second)? -1 : 1;
-}
-
-class cmp
-{
-public:
-    template <class K,class V>
-    int operator()(const pair<K,V>& a,const pair<K,V>& b)
-    {
-        if (a.second == b.second) return 0;
-        return (a.second < b.second)? -1 : 1;
-    }
-};
-
-template <class K,class V>
-vector<pair<K, V>> getMapSortByValue(map<K,V> map)
-{
-    vector<pair<K, V>> sortedMapVector;
-    for (auto const& pair : map)
-    {
-        sortedMapVector.push_back(pair);
-    }
-    sort(sortedMapVector.begin(), sortedMapVector.end(), [](const pair<int, int>& a, const pair<int, int>& b) -> bool {return a.second>b.second; });
-    return sortedMapVector;
-}
-
 template<class K, class V>
 static void saveMap(ostream &out, map<K, V> map)
     {
@@ -71,6 +40,17 @@ static void saveMap(ostream &out, map<K, V> map)
         }
     }
 
+template<class K, class T>
+vector<K> loadVector(istream& in, vector<K> vec, Builder<T>* builder)
+{
+    int size;
+    in.read(rcastc(&size), sizeof(size));
+    for (int i = 0; i < size; ++i)
+    {
+        vec.push_back(builder->construct(in));
+    }
+    return vec;
+}
 
 template<class K>
 static void saveVector(ostream& out, vector<K> vec)
@@ -83,7 +63,7 @@ static void saveVector(ostream& out, vector<K> vec)
     }
 }
 
-
+// others templates
 template <class T>
 void printVector(vector<T> vec)
 {
@@ -91,4 +71,17 @@ void printVector(vector<T> vec)
         cout << *item << endl;
     }
 }
+
+template <class K, class V>
+vector<pair<K, V>> getMapSortByValue(map<K, V> map)
+{
+    vector<pair<K, V>> sortedMapVector;
+    for (auto const& pair : map)
+    {
+        sortedMapVector.push_back(pair);
+    }
+    sort(sortedMapVector.begin(), sortedMapVector.end(), [](const pair<int, int>& a, const pair<int, int>& b) -> bool {return a.second > b.second; });
+    return sortedMapVector;
+}
+
 #endif //CPP_HW3_SERIALIZATIONHELPER_H
