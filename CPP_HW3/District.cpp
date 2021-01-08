@@ -78,21 +78,6 @@ void District::addToElectionResult(const int partyNum)
     else this->electionResults[partyNum]++;
 }
 
-void District::increaseArrSize(int*& arr, int &currSize, const int newSize) {
-    int* newArr = new int[newSize];
-    for (int i = 0; i < currSize; i++)
-    {
-        newArr[i] = arr[i];
-    }
-    for (int i = currSize; i<newSize; i++)
-    {
-        newArr[i]=0;
-    }
-    delete[] arr;
-    currSize = newSize;
-    arr = newArr;
-}
-
 void District::increaseCitizenNum()
 {
     this->citizenNum++;
@@ -108,7 +93,6 @@ int District::getWinningParty(){
     return max.first;
 }
 
-// TODO change
 map <int,int> District::getNumOfRepresantivesPerParty()
 {
     map <int,float> percentagePerParty = this->getPercentagePerParty();

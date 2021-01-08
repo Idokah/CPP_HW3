@@ -49,7 +49,6 @@ class District
     private:
 
 		int generateID(int val=0);
-        void increaseArrSize(int*& arr,int &currSize, const int newSize);
         void addToElectionResult(const int partyNum);
 
     protected:
