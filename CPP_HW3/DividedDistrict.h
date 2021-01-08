@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "District.h"
+
 using namespace std;
 
 class DividedDistrict : public District {
