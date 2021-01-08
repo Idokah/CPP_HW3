@@ -32,7 +32,7 @@ static void saveMap(ostream &out, map<K, V> map)
         int mapSize=map.size();
         out.write(rcastcc(&mapSize), sizeof(mapSize));
         for (auto const& pair : map)
-            {
+        {
             auto key=pair.first;
             auto value=pair.second;
             out.write(rcastcc(&key), sizeof(key));

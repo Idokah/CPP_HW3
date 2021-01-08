@@ -2,6 +2,9 @@
 #include "Citizen.h"
 #include "CitizenList.h"
 #include <iostream>
+#include <list>
+#include <map>
+
 using namespace std;
 
 class Party {
@@ -18,26 +21,31 @@ class Party {
 		const string getName();
         const string getName() const;
 		string getPartyHeadName() const;
-		void printNRepresantive(const int districtID,const int n); ////prints the first n represantives of the party in district - districtID
 		int getNumberOfVotes();
 		void increaseNumberOfVotes();
         void increaseNumberOfWinningRepresentives(const int n);
         int getNumberOfWinningRepresantives();
 
 		void save(ostream& out) const;
+		void saveRepresentivesList(ostream& out, list<Citizen*> list) const;
 		void load(istream& in, vector<Citizen*> citizens);
+
+		void loadRepresentivesList(istream& in, int districtId, vector<Citizen*> citizens);
 
 		friend ostream& operator<<(ostream&, const Party&);
 		void setGenerateIDtoValue(int val);
+
+		//representivesArr func
+		void printFirstNRepresantives(int n, const int districtID) const;
+
 
     private:
         string name;
 		Citizen* partyHead;
 		int id;
-		CitizenList** representivesArr; 
-        int sizeRepresentivesArr;
+		map <int,list<Citizen*>*> representivesArr;  //key is the district id, value is point to list of citizen* (representative from this district)
+
 		int generateID(int val=0);
-        void increaseArrSize(const int newSize);
 		int numberOfVotes;
 		int numberOfWinningRepresantives;
 };

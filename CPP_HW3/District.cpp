@@ -165,7 +165,7 @@ void District::printElectionResult(int partiesLogSize, vector<Party*> parties)
         cout << "        number of voters- " << pair.second << endl
              << "        percentage of all votes - " << percentagePerParty[pair.first]<< "%" << endl;
         cout << "        represantives - " << endl;
-        parties[partyIndex]->printNRepresantive(this->getID(), numOfRepresantivesPerParty[pair.first]);
+        parties[partyIndex]->printFirstNRepresantives( (int)numOfRepresantivesPerParty[pair.first], this->getID());
     }
 
     for (int j = 0; j < partiesLogSize; ++j) {
