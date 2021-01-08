@@ -44,13 +44,11 @@ class District
         map<int, int> getElectionResults();
         friend ostream& operator<<(ostream&, const District&);
         virtual void printType(std::ostream& os) const;
-        virtual void printElectionResult(int partiesLogSize, Party** parties);
-        vector<pair<int, int>> getPartiesSortedByVotes(map<int, int> electionResult, int electionResultLogSize);
+        virtual void printElectionResult(int partiesLogSize, vector<Party*> parties);
         void setGenerateIDtoValue(int val);
     private:
 
 		int generateID(int val=0);
-        //// ---- election results functionality ----
         void increaseArrSize(int*& arr,int &currSize, const int newSize);
         void addToElectionResult(const int partyNum);
 

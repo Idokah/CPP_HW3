@@ -4,34 +4,41 @@
 #include "District.h"
 #include "Party.h"
 #include "consts.h"
-
-//#define rcastcc reinterpret_cast<const char*>
-//#define rcastc reinterpret_cast<char*>
+#include "Builders.h"
 
 class ElectionRound
 {
 	public:
         void operator=(const ElectionRound& other) = delete;
         virtual ~ElectionRound();
-		virtual void addDistrict(District* district);
+		virtual void addDistrict(District* district) = 0;
 		void addCitizen(Citizen* citizen);
 		void addParty(Party* party);
 		Citizen* getCitizenByID(const string representiveID) const;
         Party* getPartyByID(int partyID) const;
         District* getDistrictByID(const int districtID) const;
-        int getDistrictLogSize() const;
-        int getPartiesLogSize() const;
-        District** getDistricts() const;
-		Party** getPartiesArr() const;
+		vector <District*> getDistricts() const;
+		vector<Party*> getParties() const;
 		int getYear() const;
-        virtual void printAllDistricts() const;
+		virtual void printAllDistricts() const = 0;
         void printAllCitizens() const;
         void printAllParties() const;
-        Party** getSortedParties();
+		vector<Party*> getSortedParties();
 		bool isCitizenIdIsAlreadyExist(const string citizenID) const;
 		virtual void save(ostream& out) const;
 		void showElectionRoundDate() const;
 		void load(istream& in);
+
+		template <class T, class S, class C>
+		T* getItemByID(vector<T*> arr, const S id, const string errMsg, C compare) const
+		{
+			for (auto item : arr) {
+				if (compare(item->getID(), id))
+					return item;
+			}
+				throw invalid_argument(errMsg);
+		}
+
 
 private:
 		struct Date {
@@ -41,28 +48,25 @@ private:
 			void save(ostream& out) const;
 		};
 		Date date;
-		// voters
-		Citizen** votersBook;
-		int votersLogSize;
-		int votersPhySize;
-		void increaseVotersArrSize();
-
-		// parties
-		Party** parties;
-		int partiesLogSize;
-		int partiesPhySize;
-		void increasePartiesArrSize();
-		
-//        void mergeSort(Party** pointersArr, int size);
-//		void merge(Party** pointersArr1, Party** pointersArr2, int size1, int size2, Party** res);
+		vector<Citizen*> votersBook;
+		vector<Party*> parties;
 	protected:
 		ElectionRound();
 		ElectionRound(const int day, const int month, const int year);
 		ElectionRound(ElectionRound& electionRound) = delete;
-		// districts
-		int districtsLogSize;
-		int districtsPhySize;
-		District** districts;
-		void increaseDistrictsArrSize();
+		vector<District*> districts;
+		
+		template<class K, class T>
+		vector<K> loadVector(istream& in, vector<K> vec, Builder<T>* builder)
+		{
+			int size;
+			in.read(rcastc(&size), sizeof(size));
+			for (int i = 0; i < size; ++i)
+			{
+				vec.push_back(builder->construct(in));
+			}
+			return vec;
+		}
+
 };
 

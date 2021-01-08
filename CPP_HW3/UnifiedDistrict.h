@@ -7,7 +7,7 @@ public:
 	UnifiedDistrict(istream& in);
 	UnifiedDistrict(string name, int representativeNum);
 	virtual void printType(std::ostream& os) const;
-	virtual void printElectionResult(int partiesLogSize, Party** parties);
+	virtual void printElectionResult(int partiesLogSize, vector<Party*> parties);
 
 	void save(ostream& out) const;
 	void load(istream& in);

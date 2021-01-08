@@ -13,9 +13,9 @@ CitizenList::CitizenList() : len(0) {
     this->tail = NULL;
 }
 
-CitizenList::CitizenList(istream& in, Citizen** citizens, int citizensSize) : CitizenList()
+CitizenList::CitizenList(istream& in, vector<Citizen*> citizens) : CitizenList()
 {
-    this->load(in,citizens,citizensSize);
+    this->load(in,citizens);
 }
 
 CitizenList::~CitizenList()
@@ -81,7 +81,7 @@ void CitizenList::save(ostream& out) const
 }
 
 
-void CitizenList::load(istream& in, Citizen** citizens, int citizensSize) {
+void CitizenList::load(istream& in, vector<Citizen*> citizens) {
     
     int Len;
     in.read(rcastc(&Len), sizeof(Len));
@@ -91,12 +91,10 @@ void CitizenList::load(istream& in, Citizen** citizens, int citizensSize) {
         in.read(rcastc(&idLen), sizeof(idLen));
         citizenId.resize(idLen);
         in.read(&citizenId[0], idLen);
-
-        for (int i = 0; i < citizensSize; i++)
-        {
-            if (citizenId.compare(citizens[i]->getID()) == 0)
+        for (auto citizen : citizens) {
+            if (citizenId.compare(citizen->getID()) == 0)
             {
-                this->addNode(citizens[i]);
+                this->addNode(citizen);
                 break;
             }
         }
@@ -124,6 +122,8 @@ void node::save(ostream& out) const
     this->citizen->save(out);
 }
 
-void node::load(istream &in, District** districts, int districtsSize) {
-    this->citizen->load(in, districts,districtsSize);
+
+
+void node::load(istream &in, vector<District*> districts) {
+    this->citizen->load(in, districts);
 }

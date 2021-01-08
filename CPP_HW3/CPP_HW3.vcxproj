@@ -146,8 +146,10 @@
     <ClInclude Include="DividedDistrict.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="ElectionRound.h" />
+    <ClInclude Include="Builders.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="RegularElectionRound.h" />
+    <ClInclude Include="SerializationHelper.h" />
     <ClInclude Include="SimpleElectionRound.h" />
     <ClInclude Include="UnifiedDistrict.h" />
   </ItemGroup>

@@ -10,7 +10,7 @@
 using namespace std;
 
 template<class K, class V>
-static void loadMap(istream &in, map<K, V> map)
+map<K, V> loadMap(istream &in, map<K, V> map)
 {
     int mapSize;
     K key;
@@ -23,6 +23,7 @@ static void loadMap(istream &in, map<K, V> map)
         in.read(rcastc(&value), sizeof(value));
         map.insert(make_pair(key, value));
     }
+    return map;
 }
 
 
@@ -52,7 +53,7 @@ vector<pair<K, V>> getMapSortByValue(map<K,V> map)
     {
         sortedMapVector.push_back(pair);
     }
-    sort(sortedMapVector.begin(), sortedMapVector.end(), cmp());
+    sort(sortedMapVector.begin(), sortedMapVector.end(), [](const pair<int, int>& a, const pair<int, int>& b) -> bool {return a.second>b.second; });
     return sortedMapVector;
 }
 
@@ -71,4 +72,23 @@ static void saveMap(ostream &out, map<K, V> map)
     }
 
 
+template<class K>
+static void saveVector(ostream& out, vector<K> vec)
+{
+    int size = vec.size();
+    out.write(rcastcc(&size), sizeof(size));
+    for (auto const& item : vec)
+    {
+        item->save(out);
+    }
+}
+
+
+template <class T>
+void printVector(vector<T> vec)
+{
+    for (auto item: vec) {
+        cout << *item << endl;
+    }
+}
 #endif //CPP_HW3_SERIALIZATIONHELPER_H

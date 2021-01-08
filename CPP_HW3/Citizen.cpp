@@ -22,8 +22,8 @@ Citizen::Citizen(const Citizen& other) {
     *this = other;
 }
 
-Citizen::Citizen(istream& in, District** districts, int districtsSize) : Citizen() {
-    this->load(in, districts, districtsSize);
+Citizen::Citizen(istream& in, vector<District*> districts) : Citizen() {
+    this->load(in, districts);
 }
 
 Citizen::~Citizen() {
@@ -87,8 +87,7 @@ void Citizen::save(ostream& out) const
     out.write(rcastcc(&this->isAlreadyVote), sizeof(this->isAlreadyVote));
 
 }
-
-void Citizen::load(istream& in, District** districts, int districtsSize)
+void Citizen::load(istream& in, vector<District*> districts)
 {
     int nameLen, idLen;
 
@@ -103,15 +102,13 @@ void Citizen::load(istream& in, District** districts, int districtsSize)
 
     int districtID;
     in.read(rcastc(&districtID), sizeof(districtID));
-    for (int i = 0; i < districtsSize; i++)
-    {
-        if (districts[i]->getID() == districtID)
-        {
-            this->district = districts[i];
-            break;
-        }
+    for (auto district : districts) {
+        if (district->getID() == districtID)
+            {
+                this->district = district;
+                break;
+            }
     }
-
     in.read(rcastc(&this->birthYear), sizeof(this->birthYear));
     in.read(rcastc(&this->isPartyMember), sizeof(this->isPartyMember));
     in.read(rcastc(&this->isAlreadyVote), sizeof(this->isAlreadyVote));

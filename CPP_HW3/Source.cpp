@@ -53,7 +53,7 @@ enum class ELECTION_ROUND_OPTIONS {
 int main()
 {
     ElectionRound* electionRound = nullptr;
-    try {
+    //try {
         OPTIONS option = OPTIONS::showElectionResults;
         ELECTION_ROUND_OPTIONS electionRoundOption = ELECTION_ROUND_OPTIONS::newElectionRound;
         int day = 1, month = 1, year = 2018, electionRoundTypeNum = 0;
@@ -219,9 +219,9 @@ int main()
                     << "details: " << ex.what() << "." << endl << "pls try again" << endl;
             }
         }
-    } catch (...) {
-        if (electionRound != nullptr) delete electionRound;
-    }
+    //} catch (...) {
+    //    if (electionRound != nullptr) delete electionRound;
+    //}
     if (electionRound != nullptr) delete electionRound;
 }
 
@@ -353,24 +353,21 @@ void vote(ElectionRound& electionRound){
 
 void showElectionResults(ElectionRound& electionRound){
     District* district;
-    float *percentagePerParty=nullptr;
     electionRound.showElectionRoundDate();
-    for (int i = 0; i < electionRound.getDistrictLogSize(); ++i) {
+    for (int i = 0; i < electionRound.getDistricts().size(); ++i) {
 
         district = electionRound.getDistricts()[i];
         cout << "--------------" << *district << " -------------------" << endl;
-        district->printElectionResult(electionRound.getPartiesLogSize(),electionRound.getPartiesArr());
+        district->printElectionResult(electionRound.getParties().size(), electionRound.getParties());
     }
     cout << "-------------- Summary -------------------" << endl;
-    Party** parties = electionRound.getSortedParties();
-    for (int i = 0; i < electionRound.getPartiesLogSize(); i++) {
+    vector<Party*> parties = electionRound.getSortedParties();
+    for (int i = 0; i < electionRound.getParties().size(); i++) {
         cout <<*parties[i]<<endl
              << "   winning number of represantives-  " << parties[i]->getNumberOfWinningRepresantives() << endl
              << "   total number of votes from all districts- "<< parties[i]->getNumberOfVotes() << endl;
     }
 
-    delete[] percentagePerParty;
-    delete[] parties;
 }
 
 void loadElectionRound(ElectionRound* &electionRound)

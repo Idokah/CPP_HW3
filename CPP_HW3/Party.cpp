@@ -2,9 +2,9 @@
 
 Party::Party() :id(0),name(""),partyHead(nullptr),representivesArr(nullptr),numberOfVotes(0),numberOfWinningRepresantives(0),sizeRepresentivesArr(0) {}
 
-Party::Party(istream& in, Citizen** citizens, int citizensSize) :Party()
+Party::Party(istream& in, vector<Citizen*> citizens) :Party()
 {
-    this->load(in, citizens, citizensSize);
+    this->load(in, citizens);
 }
 
 Party::Party(const string name, Citizen* head) : sizeRepresentivesArr(1), numberOfVotes(0),numberOfWinningRepresantives(0)
@@ -130,7 +130,7 @@ void Party::save(ostream& out) const
 
 }
 
-void Party::load(istream& in, Citizen** citizens, int citizensSize)
+void Party::load(istream& in, vector<Citizen*> citizens)
 {
     int nameLen, partyHeadIDLen;
     string partyHeadID;
@@ -142,12 +142,11 @@ void Party::load(istream& in, Citizen** citizens, int citizensSize)
     in.read(rcastc(&partyHeadIDLen), sizeof(partyHeadIDLen));
     partyHeadID.resize(partyHeadIDLen);
     in.read(&partyHeadID[0], partyHeadIDLen);
-
-    for (int i = 0; i < citizensSize; i++)
+    for (auto citizen : citizens)
     {
-        if (citizens[i]->getID().compare(partyHeadID) == 0)
+        if (citizen->getID().compare(partyHeadID) == 0)
         {
-            this->partyHead = citizens[i];
+            this->partyHead = citizen;
             break;
         }
     }
@@ -157,7 +156,7 @@ void Party::load(istream& in, Citizen** citizens, int citizensSize)
     in.read(rcastc(&this->sizeRepresentivesArr), sizeof(sizeRepresentivesArr));
    this->representivesArr = new CitizenList*[sizeRepresentivesArr];
     for (int i = 0; i < this->sizeRepresentivesArr; i++)
-        this->representivesArr[i] = new CitizenList(in, citizens, citizensSize);
+        this->representivesArr[i] = new CitizenList(in, citizens);
 
     in.read(rcastc(&this->numberOfVotes), sizeof(numberOfVotes));
     in.read(rcastc(&this->numberOfWinningRepresantives), sizeof(numberOfWinningRepresantives));

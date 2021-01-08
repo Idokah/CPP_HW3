@@ -7,7 +7,7 @@ SimpleElectionRound::SimpleElectionRound()
 
 SimpleElectionRound::SimpleElectionRound(int day, int month, int year, int numOfRepresentative) : ElectionRound(day, month, year) {
     District* district = new DividedDistrict(const_cast<char*>("Dummy"), numOfRepresentative);
-    this->districts[this->districtsLogSize++] = district;
+    this->districts.push_back(district);
 }
 
 SimpleElectionRound::SimpleElectionRound(istream& in)

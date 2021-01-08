@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "consts.h"
+#include <vector>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ class Citizen
 		Citizen();
         Citizen(string name, string id, unsigned int birthYear, District* district);
         Citizen(const Citizen& other);
-        Citizen(istream& in, District** districts, int districtsSize);
+        Citizen(istream& in, vector<District*> districts);
 		~Citizen();
 		string getID() const;
 		Citizen& operator=(const Citizen& other);
@@ -27,7 +28,7 @@ class Citizen
 
 		friend ostream& operator<<(ostream&, const Citizen&);
 		void save(ostream& out) const;
-		void load(istream& in, District** districts, int districtsSize);
+		void load(istream& in, vector<District*> districts);
     private:
 		string name;
         string id;

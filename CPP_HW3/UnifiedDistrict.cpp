@@ -17,7 +17,7 @@ void UnifiedDistrict::printType(std::ostream& os) const
 	os << "District Type: Unified";
 }
 
-void UnifiedDistrict::printElectionResult(int partiesLogSize, Party** parties)
+void UnifiedDistrict::printElectionResult(int partiesLogSize, vector<Party*> parties)
 {
 	Party* winningParty;
 	string headName;

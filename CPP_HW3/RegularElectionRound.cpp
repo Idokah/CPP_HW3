@@ -13,18 +13,13 @@ RegularElectionRound::RegularElectionRound(istream& in)
 
 void RegularElectionRound::addDistrict(District* district)
 {
-	if (this->districtsLogSize == this->districtsPhySize)
-	{
-		this->increaseDistrictsArrSize();
-	}
-	this->districts[this->districtsLogSize++] = district;
+	this->districts.push_back(district);
+
 }
 
 void RegularElectionRound::printAllDistricts () const
 {
-	for (int i = 0; i < districtsLogSize; ++i) {
-		cout << *(districts[i]) << endl;
-	}
+	printVector(this->districts);
 }
 
 void RegularElectionRound::save(ostream& out) const

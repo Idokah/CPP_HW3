@@ -99,11 +99,10 @@ void District::increaseCitizenNum()
 }
 
 int District::getWinningParty(){
-    pair<int, int> max = make_pair(-1,-1);
-    map<int, int>::iterator itr;
-    for (itr = this->electionResults.begin(); itr != this->electionResults.end(); ++itr){
-        if (itr->second > max.second){
-            max = *itr;
+    pair<int, int> max = make_pair(1,-1);
+    for (auto item : this->electionResults){
+        if (item.second > max.second){
+            max = item;
         }
     }
     return max.first;
@@ -121,15 +120,6 @@ map <int,int> District::getNumOfRepresantivesPerParty()
     }
 
     return numOfRepresantivesPerParty;
-
-//    DynamicArray<float> percentagePerParty = this->getPercentagePerParty();
-//    int *numOfRepresantivesPerParty = new int[electionResultsSize];
-//    for (int i = 0; i < this->electionResultsSize; ++i)
-//    {
-//        numOfRepresantivesPerParty[i] = round(percentagePerParty[i] * this->representativeNum / 100);
-//    }
-//    numOfExistsPartiesInDistrict = this->electionResultsSize;
-//    return numOfRepresantivesPerParty;
 }
 
 map <int,float> District::getPercentagePerParty()
@@ -141,17 +131,6 @@ map <int,float> District::getPercentagePerParty()
     }
 
     return percentagePerParty;
-
-//    float numberOfVotes;
-//    int numberOfParties = (this->electionResults.end()--)->first;
-//    DynamicArray<float> percentagePerParty;
-//
-//    for (int i = 0; i < numberOfParties; ++i) {
-//        numberOfVotes = (this->electionResults.find(i) ==  this->electionResults.end()) ?
-//                    0 : static_cast<float>(this->electionResults[i]);
-//        percentagePerParty[i] = (this->voteCount == 0) ? 0 : (numberOfVotes / static_cast<float>(this->voteCount)) * 100;
-//    }
-//    return percentagePerParty;
 }
 
 float District::getVotePercentage()
@@ -166,7 +145,7 @@ ostream& operator<<(ostream& os, const District& district)
     return os;
 }
 
-void District::printElectionResult(int partiesLogSize, Party** parties)
+void District::printElectionResult(int partiesLogSize, vector<Party*> parties)
 {
     Party* party;
     string headName;
@@ -281,7 +260,7 @@ void District::load(istream& in)
     in.read(rcastc(&this->citizenNum), sizeof(this->citizenNum));
     in.read(rcastc(&this->votersPercentage), sizeof(this->votersPercentage));
     in.read(rcastc(&this->voteCount), sizeof(this->voteCount));
-    loadMap(in, this->electionResults);
+    this->electionResults=loadMap(in, this->electionResults);
     in.read(rcastc(&this->representativeNum), sizeof(this->representativeNum));
 }
 

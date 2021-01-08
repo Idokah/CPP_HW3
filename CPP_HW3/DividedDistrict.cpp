@@ -16,7 +16,7 @@ void DividedDistrict::printType(std::ostream& os) const
 	os << "District Type: Divided";
 }
 
-void DividedDistrict::printElectionResult(int partiesLogSize, Party** parties)
+void DividedDistrict::printElectionResult(int partiesLogSize, vector<Party*> parties)
 {
     Party* party;
     map<int,int> reprsantivePerParty= this->getNumOfRepresantivesPerParty();

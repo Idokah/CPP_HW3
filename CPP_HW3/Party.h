@@ -7,7 +7,7 @@ using namespace std;
 class Party {
 	public:
 		Party();
-		Party(istream& in,Citizen** citizens, int citizensSize);
+		Party(istream& in,vector<Citizen*> citizens);
 		Party(const string name, Citizen* head);
 		Party(const Party& other);
 		~Party();
@@ -25,7 +25,7 @@ class Party {
         int getNumberOfWinningRepresantives();
 
 		void save(ostream& out) const;
-		void load(istream& in, Citizen** citizens, int citizensSize);
+		void load(istream& in, vector<Citizen*> citizens);
 
 		friend ostream& operator<<(ostream&, const Party&);
 		void setGenerateIDtoValue(int val);
