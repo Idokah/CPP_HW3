@@ -141,8 +141,9 @@ int main()
         }
     }
     catch (invalid_argument ex) {
-                cout << "You enter out of range argument :(" << endl << "details: " << ex.what() << "." << endl;
+                cout << "You enter invalid argument :(" << endl << "details: " << ex.what() << "." << endl;
     } catch (...) {
+        cout << "There was some error :(" << endl;
         if (electionRound != nullptr) delete electionRound;
         electionRound = nullptr;
     }
@@ -270,8 +271,7 @@ ELECTION_ROUND_TYPE loadElectionRound(ElectionRound* &electionRound)
     cin >> fileName;
     ifstream infile(fileName, ios::binary);
     if (!infile) {
-        cout << "Error with infile" << endl;
-        exit(-1);
+        throw invalid_argument("Error with outfile");
     }
     infile.read(rcastc(&typenum), sizeof(typenum));
     type = (ELECTION_ROUND_TYPE)typenum;
@@ -294,8 +294,7 @@ void saveElectionRound(ElectionRound* electionRound)
     cin >> fileName;
     ofstream outfile(fileName, ios::binary | ios::trunc);
     if (!outfile) {
-        cout << "Error with infile" << endl;
-        exit(-1);
+        throw invalid_argument("Error with infile");
     }
     electionRound->save(outfile);
     outfile.close();
