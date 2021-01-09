@@ -38,12 +38,15 @@ int main()
         ELECTION_ROUND_OPTIONS electionRoundOption = ELECTION_ROUND_OPTIONS::newElectionRound;
         int day = 1, month = 1, year = 2018, electionRoundTypeNum = 0;
         ELECTION_ROUND_TYPE electionRoundType;
-        int optionNum, electionRoundOptionNum = 0;
+        int optionNum, electionRoundOptionNum = 1;
 
         cout << "enter one of the options-" << endl
             << "1 - add new election round" << endl
             << "2- load election round" << endl;
         cin >> electionRoundOptionNum;
+        if ((electionRoundOptionNum != (int)ELECTION_ROUND_OPTIONS::newElectionRound) && (electionRoundOptionNum != (int)ELECTION_ROUND_OPTIONS::loadElectionRound))
+            throw invalid_argument("invalid option");
+
         electionRoundOption = (ELECTION_ROUND_OPTIONS)electionRoundOptionNum;
         switch (electionRoundOption)
         {
@@ -72,61 +75,74 @@ int main()
             electionRoundType = loadElectionRound(electionRound);
         }
 
+        //        addDistrictMOCK(*electionRound, const_cast<char*>("A"), -8, 1);  // invalid
+        //        addDistrictMOCK(*electionRound, const_cast<char*>("A"), 4, 7);  // invalid
         addDistrictMOCK(*electionRound, const_cast<char*>("A"), 4, 1);
         addDistrictMOCK(*electionRound, const_cast<char*>("B"), 10,1);
         addDistrictMOCK(*electionRound, const_cast<char*>("C"), 2, 0);
-        printAllDistricts(*electionRound);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A1"), const_cast<char*>("11"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A2"), const_cast<char*>("12"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A3"), const_cast<char*>("13"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A4"), const_cast<char*>("14"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A5"), const_cast<char*>("15"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B1"), const_cast<char*>("21"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B2"), const_cast<char*>("22"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B3"), const_cast<char*>("23"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B4"), const_cast<char*>("24"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B5"), const_cast<char*>("25"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B6"), const_cast<char*>("26"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B7"), const_cast<char*>("27"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B8"), const_cast<char*>("28"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B9"), const_cast<char*>("29"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B10"), const_cast<char*>("210"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("C1"), const_cast<char*>("31"), 3, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("C2"), const_cast<char*>("32"), 3, electionRoundType, 1880);
-        addPartyMOCK(*electionRound, const_cast<char*>("one"), const_cast<char*>("12"));
-        addPartyMOCK(*electionRound, const_cast<char*>("two"), const_cast<char*>("21"));
-        addPartyMOCK(*electionRound, const_cast<char*>("three"), const_cast<char*>("22"));
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("11"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("14"), 1, 1, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("23"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("24"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("25"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("26"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("15"), 2, 1, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("31"), 3, 3, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("32"), 3, 3, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("27"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("28"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("29"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("210"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("13"), 3, 1, electionRoundType);
-        printAllDistricts(*electionRound);
-        printAllParties(*electionRound);
-        printAllCitizens(*electionRound);
-        voteMOCK(*electionRound, const_cast<char*>("11"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("13"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("14"), 1);
-        voteMOCK(*electionRound, const_cast<char*>("15"), 1);
-        voteMOCK(*electionRound, const_cast<char*>("23"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("24"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("25"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("26"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("27"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("28"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("29"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("210"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("31"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("32"), 3);
+
+//                addCitizenMOCK(*electionRound, const_cast<char*>("A1"), const_cast<char*>("000000011"), 1, electionRoundType, 2009);// invalid
+//                addCitizenMOCK(*electionRound, const_cast<char*>("A1"), const_cast<char*>("0011"), 1, electionRoundType, 1880);// invalid
+        addCitizenMOCK(*electionRound, const_cast<char*>("A1"), const_cast<char*>("000000011"), 1, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("A2"), const_cast<char*>("000000012"), 1, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("A3"), const_cast<char*>("000000013"), 1, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("A4"), const_cast<char*>("000000014"), 1, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("A5"), const_cast<char*>("000000015"), 1, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B1"), const_cast<char*>("000000021"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B2"), const_cast<char*>("000000022"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B3"), const_cast<char*>("000000023"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B4"), const_cast<char*>("000000024"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B5"), const_cast<char*>("000000025"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B6"), const_cast<char*>("000000026"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B7"), const_cast<char*>("000000027"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B8"), const_cast<char*>("000000028"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B9"), const_cast<char*>("000000029"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("B10"), const_cast<char*>("000000210"), 2, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("C1"), const_cast<char*>("000000031"), 3, electionRoundType, 1880);
+        addCitizenMOCK(*electionRound, const_cast<char*>("C2"), const_cast<char*>("000000032"), 3, electionRoundType, 1880);
+
+//                addPartyMOCK(*electionRound, const_cast<char*>("one"), const_cast<char*>("4"));  //  invalid no such citizen
+        addPartyMOCK(*electionRound, const_cast<char*>("one"), const_cast<char*>("000000012"));
+//                addPartyMOCK(*electionRound, const_cast<char*>("one"), const_cast<char*>("000000012")); //  invalid already head
+        addPartyMOCK(*electionRound, const_cast<char*>("two"), const_cast<char*>("000000021"));
+        addPartyMOCK(*electionRound, const_cast<char*>("three"), const_cast<char*>("000000022"));
+
+//                setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000011"), 2, 9, electionRoundType); //  invalid district
+//                setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000011"), 9, 2, electionRoundType); //  invalid party
+//                setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("7"), 2, 2, electionRoundType); //  invalid no such citizen
+//                setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000012"), 2, 2, electionRoundType); //  invalid already head
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000011"), 2, 2, electionRoundType);
+//                setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000011"), 2, 2, electionRoundType); //  invalid already rep
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000014"), 1, 1, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000023"), 2, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000024"), 2, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000025"), 2, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000026"), 2, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000015"), 2, 1, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000031"), 3, 3, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000032"), 3, 3, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000027"), 3, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000028"), 3, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000029"), 3, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000210"), 3, 2, electionRoundType);
+        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("000000013"), 3, 1, electionRoundType);
+
+//                voteMOCK(*electionRound, const_cast<char*>("000000011"), 8); // invalid party
+//                voteMOCK(*electionRound, const_cast<char*>("7"), 2); // invalid citizen
+        voteMOCK(*electionRound, const_cast<char*>("000000011"), 2);
+        voteMOCK(*electionRound, const_cast<char*>("000000013"), 2);
+        voteMOCK(*electionRound, const_cast<char*>("000000014"), 1);
+        voteMOCK(*electionRound, const_cast<char*>("000000015"), 1);
+        voteMOCK(*electionRound, const_cast<char*>("000000023"), 2);
+        voteMOCK(*electionRound, const_cast<char*>("000000024"), 2);
+        voteMOCK(*electionRound, const_cast<char*>("000000025"), 2);
+        voteMOCK(*electionRound, const_cast<char*>("000000026"), 3);
+        voteMOCK(*electionRound, const_cast<char*>("000000027"), 3);
+        voteMOCK(*electionRound, const_cast<char*>("000000028"), 3);
+        voteMOCK(*electionRound, const_cast<char*>("000000029"), 3);
+        voteMOCK(*electionRound, const_cast<char*>("000000210"), 3);
+        voteMOCK(*electionRound, const_cast<char*>("000000031"), 3);
+        voteMOCK(*electionRound, const_cast<char*>("000000032"), 3);
 
         while (option != OPTIONS::exit) {
             try {
@@ -191,18 +207,15 @@ int main()
                 }
             }
             catch (invalid_argument ex) {
-                cout << "You enter invalid argument :(" << endl
-                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+                cout << "You enter invalid argument :(" << endl << "details: " << ex.what() << endl << "pls try again" << endl;
             }
             catch (out_of_range ex) {
-                cout << "You enter out of range argument :(" << endl
-                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+                cout << "You enter out of range argument :(" << endl << "details: " << ex.what() << endl << "pls try again" << endl;
             }
         }
     }
     catch (invalid_argument ex) {
-                cout << "You enter out of range argument :(" << endl
-                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+                cout << "You enter out of range argument :(" << endl << "details: " << ex.what() << "." << endl << "pls try again" << endl;
     } catch (...) {
         if (electionRound != nullptr) delete electionRound;
         electionRound = nullptr;
@@ -268,6 +281,9 @@ void addCitizen(ElectionRound& electionRound, ELECTION_ROUND_TYPE electionRoundT
 
 void addPartyMOCK(ElectionRound& electionRound, string name, string id){
     Citizen* head = electionRound.getCitizenByID(id);
+    if (head->getIsPartyMember()) {
+        throw invalid_argument("This citizen already set as party head.");
+    }
     Party* party = new Party(name, head);
     electionRound.addParty(party);
     head->setIsPartyMember();
@@ -279,6 +295,9 @@ void addParty(ElectionRound& electionRound) {
     cout << "enter name and the party head's id ";
     cin >> name >> id;
     Citizen* head = electionRound.getCitizenByID(id);
+    if (head->getIsPartyMember()) {
+        throw invalid_argument("This citizen already set as party head.");
+    }
     Party* party = new Party(name, head);
     electionRound.addParty(party);
     head->setIsPartyMember();
@@ -286,6 +305,7 @@ void addParty(ElectionRound& electionRound) {
 
 void setCitizenAsPartyRepresentiveMOCK(ElectionRound& electionRound, string representiveId, int partyId, int districtId, ELECTION_ROUND_TYPE electionRoundType){
     districtId = (electionRoundType == ELECTION_ROUND_TYPE::regular) ? districtId : 1;
+    electionRound.getDistrictByID(districtId);
     Citizen* citizen = electionRound.getCitizenByID(representiveId);
     if (citizen->getIsPartyMember()) {
         throw invalid_argument("This citizen already set as represantive or head.");
@@ -302,6 +322,7 @@ void setCitizenAsPartyRepresentive(ElectionRound& electionRound, ELECTION_ROUND_
     cout << "enter representive ID, party ID, district ID ";
     cin >> representiveId >> partyId >> districtId;
     districtId = (electionRoundType == ELECTION_ROUND_TYPE::regular) ? districtId : 1;
+    electionRound.getDistrictByID(districtId);
     Citizen *citizen = electionRound.getCitizenByID(representiveId);
     if (citizen->getIsPartyMember()) {
         throw invalid_argument("This citizen already set as represantive or head.");
