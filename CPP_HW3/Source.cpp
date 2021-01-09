@@ -18,7 +18,7 @@ void printAllCitizens(ElectionRound& electionRound);
 void printAllParties(ElectionRound& electionRound);
 void vote(ElectionRound& electionRound);
 void showElectionResults(ElectionRound& electionRound);
-void loadElectionRound(ElectionRound* &electionRound);
+ELECTION_ROUND_TYPE loadElectionRound(ElectionRound* &electionRound);
 void saveElectionRound(ElectionRound* electionRound);
 
 void addDistrictMOCK(ElectionRound& electionRound, string name, int representativeNum, DISTRICT_TYPE districtType);
@@ -29,32 +29,12 @@ void setCitizenAsPartyRepresentiveMOCK(ElectionRound& electionRound, string repr
 
 using namespace std;
 
-enum class OPTIONS {
-    addDistrict = 1,
-    addCitizen = 2,
-    addParty = 3,
-    addCitizenAsPartyRepresentive = 4,
-    showAllDistricts = 5,
-    showAllCitizens = 6,
-    showAllParties = 7,
-    vote = 8,
-    showElectionResults = 9,
-    exit = 10,
-    saveElectionRound = 11,
-    loadElectionRound = 12
-};
-
-enum class ELECTION_ROUND_OPTIONS {
-    newElectionRound = 1,
-    loadElectionRound = 2
-};
-
-
 int main()
 {
     ElectionRound* electionRound = nullptr;
-    //try {
+    try {
         OPTIONS option = OPTIONS::showElectionResults;
+        //TODO
         ELECTION_ROUND_OPTIONS electionRoundOption = ELECTION_ROUND_OPTIONS::newElectionRound;
         int day = 1, month = 1, year = 2018, electionRoundTypeNum = 0;
         ELECTION_ROUND_TYPE electionRoundType;
@@ -71,14 +51,12 @@ int main()
         {
             //            cout << "enter elections date DD MM YYYY ";
             //            cin >> day >> month >> year;
-            //            cout << "enter elections round type (0 for regular, 1 for simple) ";
-            //            cin >> electionRoundTypeNum;
-            while (electionRoundTypeNum != 0 && electionRoundTypeNum != 1)
-            {
-                cout << "Wrong input please try again" << endl;
-                cout << "enter elections round type (0 for regular, 1 for simple) ";
-                cin >> electionRoundTypeNum;
-            }
+            cout << "enter elections round type (0 for regular, 1 for simple) ";
+            cin >> electionRoundTypeNum;
+
+            if ((electionRoundTypeNum != (int)ELECTION_ROUND_TYPE::regular) && (electionRoundTypeNum != (int)ELECTION_ROUND_TYPE::simple))
+                throw invalid_argument("invalid election round type");
+
             electionRoundType = (ELECTION_ROUND_TYPE)electionRoundTypeNum;
             if (electionRoundType == ELECTION_ROUND_TYPE::regular) electionRound = new RegularElectionRound(day, month, year);
             else
@@ -88,14 +66,10 @@ int main()
                 cin >> numOfRepresentative;
                 electionRound = new SimpleElectionRound(day, month, year, numOfRepresentative);
             }
-
             break;
         }
         case ELECTION_ROUND_OPTIONS::loadElectionRound:
-        {
-            loadElectionRound(electionRound);
-
-        }
+            electionRoundType = loadElectionRound(electionRound);
         }
 
         addDistrictMOCK(*electionRound, const_cast<char*>("A"), 4, DISTRICT_TYPE::divided);
@@ -172,6 +146,8 @@ int main()
 
                 cin >> optionNum;
                 option = (OPTIONS)optionNum;
+                if (optionNum < (int)OPTIONS::addDistrict || optionNum >(int)OPTIONS::loadElectionRound)
+                    throw invalid_argument("invalid option");
                 switch (option)
                 {
                 case OPTIONS::addDistrict:
@@ -218,10 +194,19 @@ int main()
                 cout << "You enter invalid argument :(" << endl
                     << "details: " << ex.what() << "." << endl << "pls try again" << endl;
             }
+            catch (out_of_range ex) {
+                cout << "You enter out of range argument :(" << endl
+                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+            }
         }
-    //} catch (...) {
-    //    if (electionRound != nullptr) delete electionRound;
-    //}
+    }
+    catch (invalid_argument ex) {
+                cout << "You enter out of range argument :(" << endl
+                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+    } catch (...) {
+        if (electionRound != nullptr) delete electionRound;
+        electionRound = nullptr;
+    }
     if (electionRound != nullptr) delete electionRound;
 }
 
@@ -242,6 +227,8 @@ void addDistrict(ElectionRound &electionRound) {
     District* district;
     cout << "enter name, number of representative and district type (1 for divided, 0 for unified) ";
     cin >> name >> representativeNum >> districtTypeNum;
+    if ((districtTypeNum != (int)DISTRICT_TYPE::divided) && (districtTypeNum != (int)DISTRICT_TYPE::unified))
+        throw invalid_argument("invalid district type");
     districtType = (DISTRICT_TYPE)districtTypeNum;
     if (representativeNum <= 0) 
         throw invalid_argument("Sorry a district have a positive number of represenative number");
@@ -266,7 +253,7 @@ void addCitizen(ElectionRound& electionRound, ELECTION_ROUND_TYPE electionRoundT
     cout << "enter name, id, birth year, district number ";
     cin >> name >> id >> birthYear >> districtNum;
     if (electionRound.isCitizenIdIsAlreadyExist(id)) throw invalid_argument("This Citizen id already exists");
-    if (electionRound.getYear() - birthYear < 18) throw invalid_argument("citizen must be at least 18 years old");
+    if (electionRound.getYear() - birthYear < 18) throw out_of_range("citizen must be at least 18 years old");
 
     districtNum = (electionRoundType == ELECTION_ROUND_TYPE::regular) ? districtNum : 1;
     District* district = electionRound.getDistrictByID(districtNum); 
@@ -370,7 +357,7 @@ void showElectionResults(ElectionRound& electionRound){
 
 }
 
-void loadElectionRound(ElectionRound* &electionRound)
+ELECTION_ROUND_TYPE loadElectionRound(ElectionRound* &electionRound)
 {
     int typenum;
     ELECTION_ROUND_TYPE type;
@@ -394,6 +381,7 @@ void loadElectionRound(ElectionRound* &electionRound)
         break;
     }
     infile.close();
+    return type;
 }
 
 void saveElectionRound(ElectionRound* electionRound)

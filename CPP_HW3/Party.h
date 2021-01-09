@@ -43,7 +43,7 @@ class Party {
         string name;
 		Citizen* partyHead;
 		int id;
-		map <int,list<Citizen*>*> representivesArr;  //key is the district id, value is point to list of citizen* (representative from this district)
+		map <int,list<Citizen*>*> representivesArr;  //key is the district id, value is pointer to list of citizen* (representative from this district)
 
 		int generateID(int val=0);
 		int numberOfVotes;

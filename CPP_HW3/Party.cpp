@@ -29,7 +29,11 @@ Party& Party::operator=(const Party& other) {
     return *this;
 }
 
-Party::~Party() {}
+Party::~Party() 
+{
+    for (auto& item : this->representivesArr)
+        delete item.second;
+}
 
 const Citizen* Party::getPartyHead(){ return this->partyHead; }
 
