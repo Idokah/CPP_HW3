@@ -22,11 +22,11 @@ void DividedDistrict::printElectionResult(int partiesLogSize, vector<Party*> par
     map<int,int> reprsantivePerParty= this->getNumOfRepresantivesPerParty();
     vector<pair<int, int>> votersPerParty = getMapSortByValue(this->getElectionResults());
     cout << "--- all parties heads --- " << endl;
-    for (int i = 0; i < votersPerParty.size(); i++)
-
+    for (auto item: votersPerParty)
+    //for (int i = 0; i < votersPerParty.size(); i++)
     {
-        int numOfRepresantive = reprsantivePerParty[votersPerParty[i].first];
-        party = parties[votersPerParty[i].first-1];
+        int numOfRepresantive = reprsantivePerParty[item.first];
+        party = parties[item.first-1];
         if (numOfRepresantive != 0)
         {
             cout << "    " <<  *(party->getPartyHead()) << ", Number of represantives: " << numOfRepresantive << endl;

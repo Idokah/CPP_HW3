@@ -78,8 +78,9 @@ bool comparePartyRepresantives(Party *party1, Party *party2) {
 
 vector<Party*> ElectionRound::getSortedParties()
 {
-    std::sort(this->parties.begin(), this->parties.end(), comparePartyRepresantives);
-    return this->parties;
+    vector<Party*> sortedParties = this->parties;
+    std::sort(sortedParties.begin(),sortedParties.end(), comparePartyRepresantives);
+    return sortedParties;
 }
 
 bool ElectionRound::isCitizenIdIsAlreadyExist(const string citizenID) const

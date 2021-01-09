@@ -36,9 +36,9 @@ int main()
         OPTIONS option = OPTIONS::showElectionResults;
         //TODO
         ELECTION_ROUND_OPTIONS electionRoundOption = ELECTION_ROUND_OPTIONS::newElectionRound;
-        int day = 1, month = 1, year = 2018, electionRoundTypeNum = 0;
+        int day , month , year , electionRoundTypeNum;
         ELECTION_ROUND_TYPE electionRoundType;
-        int optionNum, electionRoundOptionNum = 0;
+        int optionNum, electionRoundOptionNum;
 
         cout << "enter one of the options-" << endl
             << "1 - add new election round" << endl
@@ -49,8 +49,8 @@ int main()
         {
         case ELECTION_ROUND_OPTIONS::newElectionRound:
         {
-            //            cout << "enter elections date DD MM YYYY ";
-            //            cin >> day >> month >> year;
+            cout << "enter elections date DD MM YYYY ";
+            cin >> day >> month >> year;
             cout << "enter elections round type (0 for regular, 1 for simple) ";
             cin >> electionRoundTypeNum;
 
@@ -203,7 +203,8 @@ int main()
     catch (invalid_argument ex) {
                 cout << "You enter out of range argument :(" << endl
                     << "details: " << ex.what() << "." << endl << "pls try again" << endl;
-    } catch (...) {
+    } 
+    catch (...) {
         if (electionRound != nullptr) delete electionRound;
         electionRound = nullptr;
     }
@@ -351,8 +352,8 @@ void showElectionResults(ElectionRound& electionRound){
         district->printElectionResult(electionRound.getParties().size(), electionRound.getParties());
     }
     cout << "-------------- Summary -------------------" << endl;
-    vector<Party*> parties = electionRound.getSortedParties();
-    for (auto party : electionRound.getParties()) {
+    vector<Party*> sortedParties = electionRound.getSortedParties();
+    for (auto party : sortedParties) {
         cout <<*party <<endl
              << "   winning number of represantives-  " << party->getNumberOfWinningRepresantives() << endl
              << "   total number of votes from all districts- "<< party->getNumberOfVotes() << endl;
