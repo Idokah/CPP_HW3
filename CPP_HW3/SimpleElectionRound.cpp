@@ -6,6 +6,7 @@ SimpleElectionRound::SimpleElectionRound()
 }
 
 SimpleElectionRound::SimpleElectionRound(int day, int month, int year, int numOfRepresentative) : ElectionRound(day, month, year) {
+    if (numOfRepresentative < 0) throw invalid_argument("number of represntative must be positive number");
     District* district = new DividedDistrict(const_cast<char*>("Dummy"), numOfRepresentative);
     this->districts.push_back(district);
 }

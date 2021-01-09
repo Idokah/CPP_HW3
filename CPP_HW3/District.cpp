@@ -129,15 +129,16 @@ ostream& operator<<(ostream& os, const District& district)
     return os;
 }
 
-void District::printElectionResult(int partiesLogSize, vector<Party*> parties)
+void District::printElectionResult(vector<Party*> parties, map<int,int>& winningRep)
 {
+
     Party* party;
     string headName;
     int partyIndex;
     map <int, int> electionResults = this->getElectionResults();
     map <int,float> percentagePerParty = this->getPercentagePerParty();
     map <int,int> numOfRepresantivesPerParty = this->getNumOfRepresantivesPerParty();
-
+    
     cout << "total voters percentage- " << this->votersPercentage << "%" << endl;
     cout << "--- parties results --- " << endl;
     vector<pair<int, int>> votersPerParty = getMapSortByValue(electionResults);
@@ -151,10 +152,9 @@ void District::printElectionResult(int partiesLogSize, vector<Party*> parties)
         cout << "        represantives - " << endl;
         parties[partyIndex]->printFirstNRepresantives( (int)numOfRepresantivesPerParty[pair.first], this->getID());
     }
-
-    for (int j = 0; j < partiesLogSize; ++j) {
-        if (this->electionResults.find(j+1) == this->electionResults.end()) {
-            cout << "    Party " << (parties[j]->getName()) << ":" << endl;
+    for (auto party : parties){
+        if (this->electionResults.find(party->getID()) == this->electionResults.end()) {
+            cout << "    Party " << (party->getName()) << ":" << endl;
             cout << "        number of voters" << " - 0" << endl
                  << "        percentage of all votes - 0%" << endl;
         }

@@ -54,7 +54,7 @@ void Party::addRepresentive(const int districtId, Citizen* newRepresentive)
 {
     if (this->representivesArr.find(districtId) == this->representivesArr.end()) //there is no list for this district
     {
-        list <Citizen*> *newRepresentativeArr = new list<Citizen*>; //delete this or find another way
+        list <Citizen*> *newRepresentativeArr = new list<Citizen*>;
         newRepresentativeArr->push_back(newRepresentive);
         representivesArr[districtId] = newRepresentativeArr;
     }
@@ -92,9 +92,6 @@ void Party::printFirstNRepresantives(int n,const int districtID) const
     }
     if (i < n) cout << "            there aren't enough represantives" << endl;
 }
-
-
-void Party::increaseNumberOfWinningRepresentives(const int n) { this->numberOfWinningRepresantives+=n; }
 
 int Party::getNumberOfWinningRepresantives(){ return this->numberOfWinningRepresantives; }
 
@@ -183,7 +180,6 @@ void Party::load(istream& in, vector<Citizen*> citizens)
     {
         in.read(rcastc(&districtId), sizeof(districtId));
         loadRepresentivesList(in, districtId,citizens);
-        //this->representivesArr[i] = new CitizenList(in, citizens);
     }
         
 

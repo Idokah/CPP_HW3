@@ -40,18 +40,6 @@ static void saveMap(ostream &out, map<K, V> map)
         }
     }
 
-//template<class K, class T>
-//vector<K> loadVector(istream& in, vector<K> vec, Builder<T>* builder)
-//{
-//    int size;
-//    in.read(rcastc(&size), sizeof(size));
-//    for (int i = 0; i < size; ++i)
-//    {
-//        vec.push_back(builder->construct(in));
-//    }
-//    return vec;
-//}
-
 template<class K>
 static void saveVector(ostream& out, vector<K> vec)
 {
@@ -63,7 +51,6 @@ static void saveVector(ostream& out, vector<K> vec)
     }
 }
 
-// others templates
 template <class T>
 void printVector(vector<T> vec)
 {

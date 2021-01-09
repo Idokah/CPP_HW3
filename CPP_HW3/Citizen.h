@@ -34,6 +34,6 @@ class Citizen
         string id;
 		int birthYear;
 		District* district;
-		bool isPartyMember; ////head or represantive
+		bool isPartyMember; //head or represantive
         bool isAlreadyVote;
 };

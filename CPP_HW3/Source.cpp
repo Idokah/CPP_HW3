@@ -21,11 +21,6 @@ void showElectionResults(ElectionRound& electionRound);
 ELECTION_ROUND_TYPE loadElectionRound(ElectionRound* &electionRound);
 void saveElectionRound(ElectionRound* electionRound);
 
-void addDistrictMOCK(ElectionRound& electionRound, string name, int representativeNum, int districtType);
-void voteMOCK(ElectionRound& electionRound, string citizenId, int partyId);
-void addCitizenMOCK(ElectionRound& electionRound, string name, string id, int districtNum, ELECTION_ROUND_TYPE electionRoundType, int birthYear);
-void addPartyMOCK(ElectionRound& electionRound, string name, string id);
-void setCitizenAsPartyRepresentiveMOCK(ElectionRound& electionRound, string representiveId, int partyId, int districtId, ELECTION_ROUND_TYPE electionRoundType);
 
 using namespace std;
 
@@ -34,9 +29,8 @@ int main()
     ElectionRound* electionRound = nullptr;
     try {
         OPTIONS option = OPTIONS::showElectionResults;
-        //TODO
-        ELECTION_ROUND_OPTIONS electionRoundOption = ELECTION_ROUND_OPTIONS::newElectionRound;
-        int day , month , year , electionRoundTypeNum;
+        ELECTION_ROUND_OPTIONS electionRoundOption;
+        int day, month, year, electionRoundTypeNum;
         ELECTION_ROUND_TYPE electionRoundType;
         int optionNum, electionRoundOptionNum;
 
@@ -44,6 +38,9 @@ int main()
             << "1 - add new election round" << endl
             << "2- load election round" << endl;
         cin >> electionRoundOptionNum;
+        if ((electionRoundOptionNum != (int)ELECTION_ROUND_OPTIONS::newElectionRound) && (electionRoundOptionNum != (int)ELECTION_ROUND_OPTIONS::loadElectionRound))
+            throw invalid_argument("invalid option");
+
         electionRoundOption = (ELECTION_ROUND_OPTIONS)electionRoundOptionNum;
         switch (electionRoundOption)
         {
@@ -72,61 +69,6 @@ int main()
             electionRoundType = loadElectionRound(electionRound);
         }
 
-        addDistrictMOCK(*electionRound, const_cast<char*>("A"), 4, 1);
-        addDistrictMOCK(*electionRound, const_cast<char*>("B"), 10,1);
-        addDistrictMOCK(*electionRound, const_cast<char*>("C"), 2, 0);
-        printAllDistricts(*electionRound);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A1"), const_cast<char*>("11"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A2"), const_cast<char*>("12"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A3"), const_cast<char*>("13"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A4"), const_cast<char*>("14"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("A5"), const_cast<char*>("15"), 1, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B1"), const_cast<char*>("21"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B2"), const_cast<char*>("22"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B3"), const_cast<char*>("23"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B4"), const_cast<char*>("24"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B5"), const_cast<char*>("25"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B6"), const_cast<char*>("26"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B7"), const_cast<char*>("27"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B8"), const_cast<char*>("28"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B9"), const_cast<char*>("29"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("B10"), const_cast<char*>("210"), 2, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("C1"), const_cast<char*>("31"), 3, electionRoundType, 1880);
-        addCitizenMOCK(*electionRound, const_cast<char*>("C2"), const_cast<char*>("32"), 3, electionRoundType, 1880);
-        addPartyMOCK(*electionRound, const_cast<char*>("one"), const_cast<char*>("12"));
-        addPartyMOCK(*electionRound, const_cast<char*>("two"), const_cast<char*>("21"));
-        addPartyMOCK(*electionRound, const_cast<char*>("three"), const_cast<char*>("22"));
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("11"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("14"), 1, 1, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("23"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("24"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("25"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("26"), 2, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("15"), 2, 1, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("31"), 3, 3, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("32"), 3, 3, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("27"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("28"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("29"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("210"), 3, 2, electionRoundType);
-        setCitizenAsPartyRepresentiveMOCK(*electionRound, const_cast<char*>("13"), 3, 1, electionRoundType);
-        printAllDistricts(*electionRound);
-        printAllParties(*electionRound);
-        printAllCitizens(*electionRound);
-        voteMOCK(*electionRound, const_cast<char*>("11"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("13"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("14"), 1);
-        voteMOCK(*electionRound, const_cast<char*>("15"), 1);
-        voteMOCK(*electionRound, const_cast<char*>("23"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("24"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("25"), 2);
-        voteMOCK(*electionRound, const_cast<char*>("26"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("27"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("28"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("29"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("210"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("31"), 3);
-        voteMOCK(*electionRound, const_cast<char*>("32"), 3);
 
         while (option != OPTIONS::exit) {
             try {
@@ -191,38 +133,22 @@ int main()
                 }
             }
             catch (invalid_argument ex) {
-                cout << "You enter invalid argument :(" << endl
-                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+                cout << "You enter invalid argument :(" << endl << "details: " << ex.what() << endl << "pls try again" << endl;
             }
             catch (out_of_range ex) {
-                cout << "You enter out of range argument :(" << endl
-                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
+                cout << "You enter out of range argument :(" << endl << "details: " << ex.what() << endl << "pls try again" << endl;
             }
         }
     }
     catch (invalid_argument ex) {
-                cout << "You enter out of range argument :(" << endl
-                    << "details: " << ex.what() << "." << endl << "pls try again" << endl;
-    } 
-    catch (...) {
+                cout << "You enter out of range argument :(" << endl << "details: " << ex.what() << "." << endl;
+    } catch (...) {
         if (electionRound != nullptr) delete electionRound;
         electionRound = nullptr;
     }
     if (electionRound != nullptr) delete electionRound;
 }
 
-void addDistrictMOCK(ElectionRound& electionRound, string name, int representativeNum, int districtTypeNum) {
-    District* district;
-    DISTRICT_TYPE districtType;
-    if ((districtTypeNum != (int)DISTRICT_TYPE::divided) && (districtTypeNum != (int)DISTRICT_TYPE::unified))
-        throw invalid_argument("invalid district type");
-    districtType = (DISTRICT_TYPE)districtTypeNum;
-    if (representativeNum <= 0)
-        throw invalid_argument("Sorry a district have a positive number of represenative number");
-    if (districtType == DISTRICT_TYPE::unified) district = new UnifiedDistrict(name, representativeNum);
-    else district = new DividedDistrict(name, representativeNum);
-    electionRound.addDistrict(district);
-}
 
 void addDistrict(ElectionRound &electionRound) {
     string name;
@@ -242,15 +168,6 @@ void addDistrict(ElectionRound &electionRound) {
     electionRound.addDistrict(district);
 }
 
-void addCitizenMOCK(ElectionRound& electionRound, string name, string id, int districtNum, ELECTION_ROUND_TYPE electionRoundType, int birthYear){
-    if (electionRound.isCitizenIdIsAlreadyExist(id)) throw invalid_argument("This Citizen id already exists");
-    if (electionRound.getYear() - birthYear < 18) throw out_of_range("citizen must be at least 18 years old");
-
-    districtNum = (electionRoundType == ELECTION_ROUND_TYPE::regular) ? districtNum : 1;
-    District* district = electionRound.getDistrictByID(districtNum); 
-    Citizen* citizen = new Citizen(name, id, birthYear, district);
-    electionRound.addCitizen(citizen);
-}
 
 void addCitizen(ElectionRound& electionRound, ELECTION_ROUND_TYPE electionRoundType) {
     string name;
@@ -267,33 +184,18 @@ void addCitizen(ElectionRound& electionRound, ELECTION_ROUND_TYPE electionRoundT
     electionRound.addCitizen(citizen);
 }
 
-void addPartyMOCK(ElectionRound& electionRound, string name, string id){
-    Citizen* head = electionRound.getCitizenByID(id);
-    Party* party = new Party(name, head);
-    electionRound.addParty(party);
-    head->setIsPartyMember();
-}
-
 void addParty(ElectionRound& electionRound) {
     string name;
     string id;
     cout << "enter name and the party head's id ";
     cin >> name >> id;
     Citizen* head = electionRound.getCitizenByID(id);
+    if (head->getIsPartyMember()) {
+        throw invalid_argument("This citizen already set as party head.");
+    }
     Party* party = new Party(name, head);
     electionRound.addParty(party);
     head->setIsPartyMember();
-}
-
-void setCitizenAsPartyRepresentiveMOCK(ElectionRound& electionRound, string representiveId, int partyId, int districtId, ELECTION_ROUND_TYPE electionRoundType){
-    districtId = (electionRoundType == ELECTION_ROUND_TYPE::regular) ? districtId : 1;
-    Citizen* citizen = electionRound.getCitizenByID(representiveId);
-    if (citizen->getIsPartyMember()) {
-        throw invalid_argument("This citizen already set as represantive or head.");
-    }
-    citizen->setIsPartyMember();
-    Party* party = electionRound.getPartyByID(partyId);
-    party->addRepresentive(districtId, citizen);
 }
 
 void setCitizenAsPartyRepresentive(ElectionRound& electionRound, ELECTION_ROUND_TYPE electionRoundType) {
@@ -303,6 +205,7 @@ void setCitizenAsPartyRepresentive(ElectionRound& electionRound, ELECTION_ROUND_
     cout << "enter representive ID, party ID, district ID ";
     cin >> representiveId >> partyId >> districtId;
     districtId = (electionRoundType == ELECTION_ROUND_TYPE::regular) ? districtId : 1;
+    electionRound.getDistrictByID(districtId);
     Citizen *citizen = electionRound.getCitizenByID(representiveId);
     if (citizen->getIsPartyMember()) {
         throw invalid_argument("This citizen already set as represantive or head.");
@@ -324,13 +227,7 @@ void printAllParties(ElectionRound& electionRound) {
     electionRound.printAllParties();
 }
 
-void voteMOCK(ElectionRound& electionRound, string citizenId, int partyId){
-    Party* party = electionRound.getPartyByID(partyId);
-    Citizen* voter = electionRound.getCitizenByID(citizenId);
-    District* district = voter->getDistrict();
-    district->addVote(voter, partyId);
-    party->increaseNumberOfVotes();
-}
+
 
 void vote(ElectionRound& electionRound){
     string citizenId;
@@ -344,18 +241,21 @@ void vote(ElectionRound& electionRound){
     party->increaseNumberOfVotes();
 }
 
-void showElectionResults(ElectionRound& electionRound){
+void showElectionResults(ElectionRound& electionRound)
+{
     electionRound.showElectionRoundDate();
+    map <int, int> winningRep; //the key is paryID and the value is the number of winning representatives for each party.
     for (auto district: electionRound.getDistricts())
     {
         cout << "--------------" << *district << " -------------------" << endl;
-        district->printElectionResult(electionRound.getParties().size(), electionRound.getParties());
+        district->printElectionResult(electionRound.getParties(),winningRep);
     }
     cout << "-------------- Summary -------------------" << endl;
     vector<Party*> sortedParties = electionRound.getSortedParties();
-    for (auto party : sortedParties) {
-        cout <<*party <<endl
-             << "   winning number of represantives-  " << party->getNumberOfWinningRepresantives() << endl
+    for (auto party : sortedParties)
+    {
+        cout << *party << endl
+            << "   winning number of represantives-  " << winningRep[party->getID()] << endl
              << "   total number of votes from all districts- "<< party->getNumberOfVotes() << endl;
     }
 
@@ -366,10 +266,9 @@ ELECTION_ROUND_TYPE loadElectionRound(ElectionRound* &electionRound)
     int typenum;
     ELECTION_ROUND_TYPE type;
     string fileName;
-//    cout << "enter file name ";
-//    cin >> fileName;
-//    ifstream infile(fileName, ios::binary);
-    ifstream infile("romi.bin", ios::binary);
+    cout << "enter file name ";
+    cin >> fileName;
+    ifstream infile(fileName, ios::binary);
     if (!infile) {
         cout << "Error with infile" << endl;
         exit(-1);
@@ -391,10 +290,9 @@ ELECTION_ROUND_TYPE loadElectionRound(ElectionRound* &electionRound)
 void saveElectionRound(ElectionRound* electionRound)
 {
     string fileName;
-//    cout << "enter file name ";
-//    cin >> fileName;
-//    ofstream outfile(fileName, ios::binary | ios::trunc);
-    ofstream outfile("romi.bin", ios::binary | ios::trunc);
+    cout << "enter file name ";
+    cin >> fileName;
+    ofstream outfile(fileName, ios::binary | ios::trunc);
     if (!outfile) {
         cout << "Error with infile" << endl;
         exit(-1);

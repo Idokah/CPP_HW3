@@ -1,6 +1,5 @@
 #pragma once
 #include "Citizen.h"
-#include "CitizenList.h"
 #include <iostream>
 #include <list>
 #include <map>
@@ -23,7 +22,6 @@ class Party {
 		string getPartyHeadName() const;
 		int getNumberOfVotes();
 		void increaseNumberOfVotes();
-        void increaseNumberOfWinningRepresentives(const int n);
         int getNumberOfWinningRepresantives();
 
 		void save(ostream& out) const;
@@ -35,7 +33,6 @@ class Party {
 		friend ostream& operator<<(ostream&, const Party&);
 		void setGenerateIDtoValue(int val);
 
-		//representivesArr func
 		void printFirstNRepresantives(int n, const int districtID) const;
 
 

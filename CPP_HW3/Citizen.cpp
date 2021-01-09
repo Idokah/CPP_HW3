@@ -8,10 +8,9 @@ Citizen::Citizen() :  name(""), id(""), birthYear(0), district(nullptr), isParty
 }
 
 Citizen::Citizen(string name, string id, unsigned int birthYear, District* district) : isPartyMember(false), isAlreadyVote(false) {
-    // TODO- enable
-    //if (id.length() != 9) {
-    //    throw invalid_argument("id len must be 9 digits");
-    //}
+    if (id.length() != 9) {
+        throw invalid_argument("id len must be 9 digits");
+    }
     this->name = name;
     this->id = id;
     this->birthYear = birthYear;
@@ -75,7 +74,7 @@ void Citizen::save(ostream& out) const
     out.write(rcastcc(&nameLen),sizeof(nameLen));
     out.write(&this->name[0], nameLen);
 
-    int idLen=this->name.length();
+    int idLen=this->id.length();
     out.write(rcastcc(&idLen),sizeof(idLen));
     out.write(&this->id[0], idLen);
 
@@ -97,7 +96,7 @@ void Citizen::load(istream& in, vector<District*> districts)
 
 
     in.read(rcastc(&idLen), sizeof(idLen));
-    this->id.resize(nameLen);
+    this->id.resize(idLen);
     in.read(&this->id[0], idLen);
 
     int districtID;

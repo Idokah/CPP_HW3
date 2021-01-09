@@ -17,7 +17,7 @@ void UnifiedDistrict::printType(std::ostream& os) const
 	os << "District Type: Unified";
 }
 
-void UnifiedDistrict::printElectionResult(int partiesLogSize, vector<Party*> parties)
+void UnifiedDistrict::printElectionResult(vector<Party*> parties, map<int,int>& winningRep)
 {
 	Party* winningParty;
 	string headName;
@@ -26,8 +26,8 @@ void UnifiedDistrict::printElectionResult(int partiesLogSize, vector<Party*> par
     cout << "--- the winning party head --- " << endl;
     cout << "    head of the winning party- " << headName << endl
         << "    vote percentage- " << this->getVotePercentage() << "%" << endl;
-    winningParty->increaseNumberOfWinningRepresentives(this->getRepresentativeNum());
-	District::printElectionResult(partiesLogSize, parties);
+    winningRep[this->getWinningParty()] += this->getRepresentativeNum();
+    District::printElectionResult(parties, winningRep);
 }
 void UnifiedDistrict::save(ostream& out) const
 {

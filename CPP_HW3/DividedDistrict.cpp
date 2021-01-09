@@ -16,24 +16,23 @@ void DividedDistrict::printType(std::ostream& os) const
 	os << "District Type: Divided";
 }
 
-void DividedDistrict::printElectionResult(int partiesLogSize, vector<Party*> parties)
+void DividedDistrict::printElectionResult(vector<Party*> parties, map<int,int>& winningRep)
 {
     Party* party;
     map<int,int> reprsantivePerParty= this->getNumOfRepresantivesPerParty();
     vector<pair<int, int>> votersPerParty = getMapSortByValue(this->getElectionResults());
     cout << "--- all parties heads --- " << endl;
     for (auto item: votersPerParty)
-    //for (int i = 0; i < votersPerParty.size(); i++)
     {
         int numOfRepresantive = reprsantivePerParty[item.first];
         party = parties[item.first-1];
         if (numOfRepresantive != 0)
         {
             cout << "    " <<  *(party->getPartyHead()) << ", Number of represantives: " << numOfRepresantive << endl;
-            party->increaseNumberOfWinningRepresentives(numOfRepresantive);
+            winningRep[item.first] += numOfRepresantive;
         }
      }
-    District::printElectionResult(partiesLogSize, parties);
+    District::printElectionResult(parties, winningRep);
 }
 
 void DividedDistrict::save(ostream& out) const

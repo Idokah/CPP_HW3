@@ -8,7 +8,7 @@
 #include "DynamicArray.h"
 #include <map>
 #include <vector>
-#include "SerializationHelper.h"
+#include "Templates.h"
 
 using namespace std;
 
@@ -37,14 +37,12 @@ class District
         map <int,int> getNumOfRepresantivesPerParty();
         map <int,float> getPercentagePerParty();
         float getVotePercentage();
-        void mergeSort(votesPerParty* indexesArr, int size);
-        void merge(votesPerParty* indexesArr1, votesPerParty* indexesArr2, int size1, int size2, votesPerParty* res);
         virtual void save(ostream& out) const;
         void load(istream& in);
         map<int, int> getElectionResults();
         friend ostream& operator<<(ostream&, const District&);
         virtual void printType(std::ostream& os) const;
-        virtual void printElectionResult(int partiesLogSize, vector<Party*> parties);
+        virtual void printElectionResult(vector<Party*> parties, map<int,int>& winningRep);
         void setGenerateIDtoValue(int val);
     private:
 

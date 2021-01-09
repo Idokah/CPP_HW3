@@ -10,7 +10,7 @@ class DividedDistrict : public District {
 		DividedDistrict(istream& in);
 		DividedDistrict(string name, int representativeNum);
 		virtual void printType(std::ostream& os) const;
-		virtual void printElectionResult(int partiesLogSize, vector<Party*> parties);
+		virtual void printElectionResult(vector<Party*> parties, map<int,int>& winningRep);
 		virtual void save(ostream& out) const;
 
 		void load(istream& in);

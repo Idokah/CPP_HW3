@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Citizen.h" />
-    <ClInclude Include="CitizenList.h" />
     <ClInclude Include="consts.h" />
     <ClInclude Include="District.h" />
     <ClInclude Include="DividedDistrict.h" />
@@ -149,13 +148,12 @@
     <ClInclude Include="Builders.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="RegularElectionRound.h" />
-    <ClInclude Include="SerializationHelper.h" />
+    <ClInclude Include="Templates.h" />
     <ClInclude Include="SimpleElectionRound.h" />
     <ClInclude Include="UnifiedDistrict.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Citizen.cpp" />
-    <ClCompile Include="CitizenList.cpp" />
     <ClCompile Include="District.cpp" />
     <ClCompile Include="DividedDistrict.cpp" />
     <ClCompile Include="ElectionRound.cpp" />
